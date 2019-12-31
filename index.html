@@ -1,74 +1,139 @@
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/CSS.css">
+<title>Dilela Online</title>
+
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/main.css" rel="stylesheet">
+<script src="assets/js/jquery-3.3.1.slim.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
 </head>
 
+
 <body>
-    <div class="bg" style="background-image: url('assets/images/backiee-10377.jpg');height: 100%;background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;opacity: 0.6;
-  ">
-        <div class="container" style="padding-top:230px;width:380px">
-            <div class="">
-                <div class="col s12 l12">
-                    <div class="card vertical ">
-                        <div height="150">
+<header>
 
-                        </div>
-                        <div class="card-stacked" style="height:360px">
-                            <div class=" card-content">
-                                <h4 class=" purple-text text-darken-1 center" style="font-weight:bold;">
-                                    Log in
-                                </h4>
-                                <form id="myForm2" method="post" action="/portfolio">
-                                    <div class="input-field col l12">
-                                        <i class="material-icons prefix">email_circle</i>
+<nav class="navbar navbar-dark bg-primary" role="navigation">
+	<div>
+	<!--Wishlist feature !-->
+	
+	</div>
+	<form class="navbar-form navbar-left" method="get" action="/" role="search">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="search">
+		</div>
+	</form>
+	<!--
+	<div class="sign_in">
+		Sign in
+	</div>
+	!-->
+	<button class="btn btn-light navbar-btn float-right" type="button">Sign in</button>
+	<!-- Side Panel control javascript !-->
+	</div>
+</nav>
+
+</header>
+<div class="main">
+	<!-- Image Slider javascript !-->
+	<div id="myCarousel" class="carousel slide">
+		<ul class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ul>
+		
+		<div class="carousel-inner bg-dark text-center">
+			<div class="carousel-item active">
+				<img src="assets/images/test1.jpg" alt="FirstSlide" height="500vw">
+			</div>
+			<div class="carousel-item">
+				<img src="assets/images/test2.jpg" alt="SecondSlide" height="500vw">
+			</div>
+			<div class="carousel-item">
+				<img src="assets/images/test3.jpg" alt="ThirdSlide" height="500vw">
+			</div>
+			
+		</div>
+		<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+		<span class="carousel-control-prev-icon"></span>
+		</a>
+		<a class="carousel-control-next" href="#myCarousel" data-slide="next">
+		<span class="carousel-control-next-icon"></span>
+		</a>
+	
+	</div>
+	
+	<div  class="bottomContent" style="display:flex">
+	<section style="width:80%">
+	<!-- Top products !-->
+	<div class="">
+		<div class="">
+			<h2>Houses</h2>
+			<!-- List top houses using include !-->
+			<ul class="list-unstyled">
+			<li class="topProductList">
+				<!--ADD products !-->
+				Lorem Ispum
+			</li>
+			</ul>
+			
+		</div>
+		<hr>
+		<div class="">
+			<h2>Cars</h2>
+			<!-- List top cars using include !-->
+			<ul class="list-unstyled">
+			<li class="topProductList">
+				<!--ADD products !-->
+				Lorem Ispum
+			</li>
+			</ul>
+		</div>
+		<hr>
+		<div class="">
+			<h2>Electronics</h2>
+			<!-- List top electronics using include !-->
+			<ul class="list-unstyled">
+			<li class="topProductList">
+				<!--ADD products !-->
+				Lorem Ispum
+			</li>
+			</ul>
+		</div>
+		<hr>
+		<div class="">
+			<h2>Goods</h2>
+			<!-- List top other using include !-->
+			<ul class="list-unstyled">
+			<li class="topProductList">
+				<!--ADD products !-->
+				Lorem Ispum
+			</li>
+			</ul>
+			
+		</div>
+
+	</section>
+	<aside>
+		TEst
+	</aside>
+	</div>
+</div>
 
 
-                                        <input type="email" id="email" class="validate" name="email" required><br>
-                                        <label for="email" class="label">Email</label>
-                                    </div>
-                                    <div class="input-field col l6">
-                                        <i class="material-icons prefix">account_circle</i>
+<footer class="bg-dark">
+<ul class="list-inline text-light">
+	<li class="list-inline-item">Terms and services</li>
+	<li class="list-inline-item">Copyright information</li>
+	<li class="list-inline-item">Sign in, if not signed in</li>
+</ul>
 
-                                        <input type="password" id="pass" name="password" required><br>
-                                        <label for="pass" class="label">Password</label>
-                                    </div>
-                                    <div class="center">
-                                        <input
-                                            class="purple darken-1 white-text text-darken-2waves-effect waves-light btn"
-                                            id="btn" type="submit" name="loginn" value="Login">
-                                    </div>
-                                    <div class="verical center" sytle="margin-top:30px;">
-                                        <h6>Don't have an account</h6>
-                                        <a href="/signup"> sign up</a>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="purple darken-1" style="height:40px"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- <script src="js/bootstrap.min.js"></script> -->
+</footer>
 
-        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-    </div>
 </body>
+
+
 
 </html>
