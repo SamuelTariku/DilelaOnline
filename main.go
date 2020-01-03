@@ -87,6 +87,8 @@ func main() {
 	http.HandleFunc("/signup", signup_handler)
 	http.HandleFunc("/portfolio", port_handler)
 
+	//http.Handle("/js/", http.StripPrefix("/js/", fx))
+
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -118,3 +120,4 @@ func Read(db *sql.DB, email string, password string) string {
 		panic(err)
 	}
 }
+
