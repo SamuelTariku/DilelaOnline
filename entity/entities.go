@@ -36,3 +36,7 @@ type Product struct {
 	//Categories  Category
 	Image string
 }
+type Balance struct {
+	ID          uint
+	YourBalance float64
+}
