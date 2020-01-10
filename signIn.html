@@ -1,9 +1,74 @@
-<!DOCTYPE html>
-<html>
-	<head>
 
-	</head>
-	<body>
-		
-	</body>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/Css.css">
+</head>
+
+<body>
+    <div class="bg" style="background-image: url('assets/images/backiee-10377.jpg');height: 100%;background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;opacity: 0.6;
+  ">
+        <div class="container" style="padding-top:230px;width:380px">
+            <div class="">
+                <div class="col s12 l12">
+                    <div class="card vertical ">
+                        <div height="150">
+
+                        </div>
+                        <div class="card-stacked" style="height:360px">
+                            <div class=" card-content">
+                                <h4 class=" purple-text text-darken-1 center" style="font-weight:bold;">
+                                    Log in
+                                </h4>
+                                <form id="myForm2" method="POST" action="/signin">
+                                    <div class="input-field col l12">
+                                        <i class="material-icons prefix">email_circle</i>
+
+
+                                        <input type="email" id="email" class="validate" name="email" required><br>
+                                        <label for="email" class="label">Email</label>
+                                    </div>
+                                    <div class="input-field col l6">
+                                        <i class="material-icons prefix">account_circle</i>
+
+                                        <input type="password" id="pass" name="password" required><br>
+                                        <label for="pass" class="label">Password</label>
+                                    </div>
+                                    <div class="center">
+                                        <input
+                                            class="purple darken-1 white-text text-darken-2waves-effect waves-light btn"
+                                            id="btn" type="submit" name="loginn" value="Login">
+                                    </div>
+                                    <div class="verical center" sytle="margin-top:30px;">
+                                        <h6>Don't have an account</h6>
+                                        <a href="/signuppage"> sign up</a>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="purple darken-1" style="height:40px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <script src="js/bootstrap.min.js"></script> -->
+
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
+    </div>
+</body>
+
 </html>
