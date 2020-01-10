@@ -26,3 +26,13 @@ type Comment struct {
 	Email    string
 	PlacedAt time.Time
 }
+type Product struct {
+	ID          uint
+	Name        string
+	Ptype       string
+	Price       float64
+	Description string
+	CreatedAt   time.Time
+	//Categories  Category
+	Image string
+}
