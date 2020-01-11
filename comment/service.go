@@ -2,7 +2,7 @@ package comment
 
 import "../entity"
 
-// CommentService specifies customer comment related service
+// CommentService specifies customer comment related bservice
 type CommentService interface {
 	Comments() ([]entity.Comment, error)
 	Comment(id uint) (entity.Comment, error)

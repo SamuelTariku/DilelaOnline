@@ -1,4 +1,4 @@
-package service
+package bservice
 
 import (
 	"../../balance"
@@ -30,10 +30,18 @@ func (b *BalanceService) Updateb(bal entity.Balance) error {
 	return nil
 }
 
-func (b *BalanceService) Storeb(bal entity.Balance) error {
-	err := b.balanceRepo.Storeb(bal)
+func (b *BalanceService) Storeb(id int, bal entity.Balance) error {
+	err := b.balanceRepo.Storeb(id, bal)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+func (b *BalanceService) StoreId(id uint) error {
+	err := b.balanceRepo.StoreId(id)
+	if err != nil {
+		return err
+
 	}
 	return nil
 }

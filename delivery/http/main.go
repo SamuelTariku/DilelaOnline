@@ -2,6 +2,8 @@ package main
 
 import (
 	//"../../entity"
+	"../../balance/brepository"
+	"../../balance/bservice"
 	"../../users/repository"
 	"../../users/service"
 	"../http/handler"
@@ -25,6 +27,7 @@ const (
 )
 
 var userService *service.UserService
+var balanceService *bservice.BalanceService
 
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
@@ -45,7 +48,10 @@ func main() {
 	usrRepo := repository.NewUserPostRepo(db)
 	userService = service.NewUserService(usrRepo)
 
-	adminUserHandler := handler.NewAdminUserHandler(tmpl, userService)
+	br := brepository.NewBalanceRepo(db)
+	balanceService = bservice.NewBalanceService(br)
+
+	adminUserHandler := handler.NewAdminUserHandler(tmpl, userService, balanceService)
 
 	fs := http.FileServer(http.Dir("../../ui/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))

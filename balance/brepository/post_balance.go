@@ -1,4 +1,4 @@
-package repository
+package brepository
 
 import (
 	"../../entity"
@@ -42,11 +42,28 @@ func (b *PostBalanceRepo) Updateb(bal entity.Balance) error {
 	}
 	return nil
 }
-func (b *PostBalanceRepo) Storeb(bal entity.Balance) error {
-	_, err := b.conn.Exec("INSERT INTO balance (id,balance)"+"values($1,$2)", bal.ID, bal.YourBalance)
+
+//func (b *PostBalanceRepo) Storeb(bal entity.Balance) error {
+//	_,err := b.conn.Exec("INSERT INTO balance (balance)" + "values($1)", bal.YourBalance)
+//	if err != nil{
+//		panic(err)
+//		return errors.New("failed to store balance")
+//	}
+//	return nil
+//}
+func (b *PostBalanceRepo) Storeb(id int, e entity.Balance) error {
+	_, err := b.conn.Exec("UPDATE balance Set balance = $1 WHERE id = $2", e.YourBalance, id)
 	if err != nil {
 		panic(err)
 		return errors.New("failed to store balance")
+	}
+	return nil
+}
+func (b *PostBalanceRepo) StoreId(id uint) error {
+	_, err := b.conn.Exec("INSERT INTO balance (id)"+"values($1)", id)
+	if err != nil {
+		panic(err)
+		return errors.New("failed to store ID")
 	}
 	return nil
 }
