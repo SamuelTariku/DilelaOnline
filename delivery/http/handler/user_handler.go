@@ -1,13 +1,14 @@
 package handler
 
 import (
+	"../../../balance"
 	"../../../entity"
 	"../../../users"
-	//"../../../users/repository"
-	//"../../../users/service"
+	//"../../../users/brepository"
+	//"../../../users/bservice"
 	//"database/sql"
 	//"fmt"
-	//_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"log"
@@ -17,10 +18,11 @@ import (
 type AdminUserHandler struct {
 	tmpl    *template.Template
 	userSrv users.UserService
+	balsrv  balance.BalanceService
 }
 
-func NewAdminUserHandler(t *template.Template, ur users.UserService) *AdminUserHandler {
-	return &AdminUserHandler{tmpl: t, userSrv: ur}
+func NewAdminUserHandler(t *template.Template, ur users.UserService, b balance.BalanceService) *AdminUserHandler {
+	return &AdminUserHandler{tmpl: t, userSrv: ur, balsrv: b}
 }
 
 func (userService *AdminUserHandler) Index_handler(w http.ResponseWriter, req *http.Request) {
@@ -51,6 +53,9 @@ func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, re
 	usr.Password = string(hashedpass)
 
 	err = userService.userSrv.StoreUser(usr)
+	use, err := userService.userSrv.User(usr.Email)
+	err = userService.balsrv.StoreId(use.ID)
+
 	if err != nil {
 		panic(err.Error())
 	}
