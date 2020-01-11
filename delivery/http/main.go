@@ -66,6 +66,7 @@ func main() {
 	http.HandleFunc("/signup", adminUserHandler.AdminRegistration)
 	http.HandleFunc("/signin", adminUserHandler.AdminLogin)
 	http.HandleFunc("/profile", adminUserHandler.ProfileHandler)
+	http.HandleFunc("/mySales", adminUserHandler.MySalesHandler)
 	http.ListenAndServe(":8080", nil)
 
 }

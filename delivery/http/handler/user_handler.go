@@ -35,6 +35,9 @@ func NewAdminUserHandler(t *template.Template, ur users.UserService, b balance.B
 func (userService *AdminUserHandler) Index_handler(w http.ResponseWriter, req *http.Request) {
 	userService.tmpl.ExecuteTemplate(w, "index.html", nil)
 }
+func (userService *AdminUserHandler) MySalesHandler(w http.ResponseWriter, req *http.Request) {
+	userService.tmpl.ExecuteTemplate(w, "mySales.html", nil)
+}
 
 func (userService *AdminUserHandler) ProfileHandler(w http.ResponseWriter, req *http.Request) {
 	type displayItem struct {
@@ -87,6 +90,9 @@ func (userService *AdminUserHandler) Signuppage(w http.ResponseWriter, req *http
 }
 
 func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, req *http.Request) {
+	if session.active {
+		http.Redirect(w, req, "/profile", http.StatusSeeOther)
+	}
 	if req.Method != "POST" {
 		http.Redirect(w, req, "/registration", http.StatusSeeOther)
 		return
@@ -118,6 +124,9 @@ func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, re
 }
 
 func (userService *AdminUserHandler) AdminLogin(w http.ResponseWriter, req *http.Request) {
+	if session.active {
+		http.Redirect(w, req, "/profile", http.StatusSeeOther)
+	}
 	if req.Method != "POST" {
 		http.Redirect(w, req, "/signinpage", http.StatusSeeOther)
 		return
