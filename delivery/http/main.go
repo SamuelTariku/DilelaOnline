@@ -9,8 +9,8 @@ import (
 	"../http/handler"
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 	"html/template"
-
 	"net/http"
 )
 
@@ -22,7 +22,7 @@ const (
 	host     = "localhost"
 	port     = 5432
 	user     = "postgres"
-	password = "dagim@123"
+	password = "password"
 	dbname   = "onlinedb"
 )
 
@@ -30,6 +30,7 @@ var userService *service.UserService
 var balanceService *bservice.BalanceService
 
 func main() {
+	/* Database connection */
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
@@ -43,6 +44,9 @@ func main() {
 	if err = db.Ping(); err != nil {
 		panic(err)
 	}
+
+	/* ---------------------- */
+
 	tmpl := template.Must(template.ParseGlob("../../ui/*.html"))
 
 	usrRepo := repository.NewUserPostRepo(db)
@@ -61,7 +65,7 @@ func main() {
 	http.HandleFunc("/signinpage", adminUserHandler.Login)
 	http.HandleFunc("/signup", adminUserHandler.AdminRegistration)
 	http.HandleFunc("/signin", adminUserHandler.AdminLogin)
-
+	http.HandleFunc("/profile", adminUserHandler.ProfileHandler)
 	http.ListenAndServe(":8080", nil)
 
 }

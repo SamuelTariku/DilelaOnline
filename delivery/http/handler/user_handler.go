@@ -21,12 +21,61 @@ type AdminUserHandler struct {
 	balsrv  balance.BalanceService
 }
 
+type SessionHandler struct {
+	active bool
+	user   entity.User
+}
+
+var session SessionHandler
+
 func NewAdminUserHandler(t *template.Template, ur users.UserService, b balance.BalanceService) *AdminUserHandler {
 	return &AdminUserHandler{tmpl: t, userSrv: ur, balsrv: b}
 }
 
 func (userService *AdminUserHandler) Index_handler(w http.ResponseWriter, req *http.Request) {
 	userService.tmpl.ExecuteTemplate(w, "index.html", nil)
+}
+
+func (userService *AdminUserHandler) ProfileHandler(w http.ResponseWriter, req *http.Request) {
+	type displayItem struct {
+		ItemName  string
+		ItemPrice float64
+	}
+	type profileData struct {
+		Username        string
+		AccountNo       float64
+		ShoppingCart    []displayItem
+		ShoppingHistory []displayItem
+	}
+	if session.active {
+
+		balanceAmmount, err := userService.balsrv.Balance(int(session.user.ID))
+		if err != nil {
+			panic(err)
+		}
+		//Add shopping cart table
+
+		shoppingCartData := []displayItem{
+			displayItem{"Item 1", 200.5},
+			displayItem{"Item 2", 1450.6},
+		}
+
+		shoppingHistoryData := []displayItem{
+			displayItem{"Item 1", 200.5},
+			displayItem{"Item 2", 1450.6},
+		}
+
+		data := profileData{session.user.FirstName,
+			balanceAmmount.YourBalance, shoppingCartData,
+			shoppingHistoryData}
+		err = userService.tmpl.ExecuteTemplate(w, "profile.html", data)
+		if err != nil {
+			panic(err)
+		}
+
+	} else {
+		http.Redirect(w, req, "/", 303)
+	}
 }
 
 func (userService *AdminUserHandler) Login(w http.ResponseWriter, req *http.Request) {
@@ -55,7 +104,10 @@ func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, re
 	err = userService.userSrv.StoreUser(usr)
 	use, err := userService.userSrv.User(usr.Email)
 	err = userService.balsrv.StoreId(use.ID)
-
+	balanceEmpty := entity.Balance{}
+	balanceEmpty.ID = use.ID
+	balanceEmpty.YourBalance = 0
+	userService.balsrv.Storeb(int(balanceEmpty.ID), balanceEmpty)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -92,7 +144,10 @@ func (userService *AdminUserHandler) AdminLogin(w http.ResponseWriter, req *http
 		if err != nil {
 			panic(err.Error())
 		}
-		err = userService.tmpl.ExecuteTemplate(w, "profile.html", user)
+		//TEMPORARY
+		//WILL SET UP SESSIONS
+		session = SessionHandler{true, user}
+		http.Redirect(w, req, "/profile", http.StatusSeeOther)
 	}
 	http.Redirect(w, req, "/signinpage", 303)
 	if err != nil {
