@@ -13,6 +13,7 @@
 
 <body>
 <header>
+
 <nav class="navbar navbar-dark bg-primary">
 	<div class="navbar-header">
 		<a href="index.html">
@@ -23,20 +24,20 @@
 	<div>
 	</div>
 	!-->
-	<form class="navbar-form navbar-left" method="get" action="search.html" role="search">
+	<form class="navbar-form navbar-left" method="get" action="/" role="search">
 			<input type="text" class="form-control" placeholder="search">
 			<button type="submit" class="btn btn-light">search</button>
 	</form>
 
 	<div class="shoppingCard">cart</div>
-	<a href="/signin"><button class="btn btn-light navbar-btn" type="button">Sign in</button></a>
+	<a href="signIn.html"><button class="btn btn-light navbar-btn" type="button">Sign in</button></a>
 
-	<button class="btn btn-light navbar-btn float-right" type="button" style="display:none">Burger</button>
-
+	<button class="btn btn-light navbar-btn float-right" type="button" style="display:none">Sign out</button>
+	<!-- Side Panel control javascript !-->
 	</div>
 </nav>
 
-<nav class="secondNav navbar" role="navigation">
+<nav class="navbar bg-secondary" role="navigation">
 	<ul class="nav">
 		<li class="nav-item active">
 			<a class="nav-link text-light" href="houses.html">Houses</a>
@@ -54,45 +55,30 @@
 </nav>
 
 </header>
-<div class="main">
-	<!-- Image Slider javascript !-->
-	<div id="myCarousel" class="carousel slide">
-		<ul class="carousel-indicators">
-			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<li data-target="#myCarousel" data-slide-to="1"></li>
-			<li data-target="#myCarousel" data-slide-to="2"></li>
-		</ul>
-		<div class="carousel-inner text-center" id="carouselDiv">
-			<div class="carousel-item active">
-				<img src="assets/images/test1.jpg" alt="FirstSlide" height="500vw">
-			</div>
-			<div class="carousel-item">
-				<img src="assets/images/test2.jpg" alt="SecondSlide" height="500vw">
-			</div>
-			<div class="carousel-item">
-				<img src="assets/images/test3.jpg" alt="ThirdSlide" height="500vw">
-			</div>
+<div class="category-main">
+	<h2>Houses</h2>
+	<div class="category-container">
+	<div class="category-side">
+		<nav class="navbar navbar-expand-sm">
+			<ul class="category-navlist list-unstyled">
+				<li class="nav-item">Category 1</li>
+				<li class="nav-item">Category 2</li>
+				<li class="nav-item">Category 3</li>
+				<li class="nav-item">Category 4</li>
+				<li class="nav-item">...</li>
 
-		</div>
-		<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-		<span class="carousel-control-prev-icon"></span>
-		</a>
-		<a class="carousel-control-next" href="#myCarousel" data-slide="next">
-		<span class="carousel-control-next-icon"></span>
-		</a>
+			</ul>
 
+		</nav>
 	</div>
+	<div class="category-products">
+		<h3>Category 1</h3>
+		<div class="Product">
+			<ul class="ProductList list-unstyled">
+							<div class="row">
 
-	<div  class="bottomContent" style="display:flex">
-	<section style="width:80%">
-	<!-- Top products !-->
-	<div class="topProducts">
-		<div class="topProduct">
-			<h2>Houses</h2>
-			<!-- List top houses using include !-->
-			<ul class="topProductList list-unstyled">
 
-							<li>
+							<li class="col-sm-3">
 								<a href="#">
 								<div class="product">
 									<img src="assets\images\img1.jpg" alt="houseImage">
@@ -101,7 +87,7 @@
 								</a>
 							</li>
 
-							<li>
+							<li class="col-sm-3">
 								<a href="#">
 								<div class="product">
 									<img src="assets\images\img1.jpg" alt="houseImage">
@@ -111,7 +97,15 @@
 							</li>
 
 
-							<li>
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+							</a>
+							</li>
+							<li class="col-sm-3">
 								<a href="#">
 								<div class="product">
 									<img src="assets\images\img1.jpg" alt="houseImage">
@@ -120,7 +114,39 @@
 							</a>
 							</li>
 
-							<li>
+							</div>
+
+							<div class="row">
+
+								<li class="col-sm-3">
+									<a href="#">
+									<div class="product">
+										<img src="assets\images\img1.jpg" alt="houseImage">
+										<p>$500</p>
+									</div>
+								</a>
+								</li>
+
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+								</a>
+							</li>
+
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+								</a>
+							</li>
+
+
+							<li class="col-sm-3">
 								<a href="#">
 								<div class="product">
 									<img src="assets\images\img1.jpg" alt="houseImage">
@@ -128,158 +154,86 @@
 								</div>
 							</a>
 							</li>
+
+							</div>
+							<div class="row">
+								<li class="col-sm-3">
+									<a href="#">
+									<div class="product">
+										<img src="assets\images\img1.jpg" alt="houseImage">
+										<p>$500</p>
+									</div>
+								</a>
+								</li>
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+								</a>
+							</li>
+
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+								</a>
+							</li>
+
+
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+							</a>
+							</li>
+
+							</div>
+							<div class="row">
+								<li class="col-sm-3">
+									<a href="#">
+									<div class="product">
+										<img src="assets\images\img1.jpg" alt="houseImage">
+										<p>$500</p>
+									</div>
+								</a>
+								</li>
+
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+								</a>
+							</li>
+
+							<li class="col-sm-3">
+								<a href="#">
+								<div class="product">
+									<img src="assets\images\img1.jpg" alt="houseImage">
+									<p>$500</p>
+								</div>
+								</a>
+							</li>
+
+
+
+
+							</div>
+
 
 			</ul>
-			<a href="houses.html" style="text-align: right"><p>See more houses...</p></a>
 		</div>
-		<hr>
-		<div class="">
-			<h2>Cars</h2>
-			<!-- List top cars using include !-->
-			<ul class="topProductList list-unstyled">
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
-			</ul>
-			<a href="cars.html" style="text-align: right"><p>See more cars...</p></a>
-		</div>
-		<hr>
-		<div class="">
-			<h2>Electronics</h2>
-			<!-- List top electronics using include !-->
-			<ul class="topProductList list-unstyled">
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
-			</ul>
-			<a href="electronics.html" style="text-align: right"><p>See more electronics...</p></a>
-		</div>
-		<hr>
-		<div class="">
-			<h2>Goods</h2>
-			<!-- List top other using include !-->
-			<ul class="topProductList list-unstyled">
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
-			</ul>
-			<a href="goods.html" style="text-align: right"><p>See more goods...</p></a>
-
 		</div>
 
-	</section>
-	<aside>
-		Advertizing
-	</aside>
 	</div>
 </div>
-
-
 <footer class="bg-dark">
 <ul class="list-inline text-light">
 	<li class="list-inline-item">Terms and services</li>
