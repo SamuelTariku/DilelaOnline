@@ -62,32 +62,37 @@
 <div class="add-popup" id="addPopup">
 	<div class="add-popup-inner">
 		<button class="close" onclick="document.getElementById('addPopup').style.display = 'None'">X</button>
-	<form action="/mySales" class="">
+	<form action="/newProduct" class="" method="POST" enctype="multipart/form-data">
 		<h3>Add product</h3>
 		<hr>
 		<div class="row">
 		<div class="form-group">
 			<label>name</label>
-			<input class="form-control" type="text" name="addName" value="">
+			<input class="form-control" type="text" name="name" value="">
 		</div>
 		<div class="form-group">
-			<label>type of object</label>
-			<input class="form-control" type="text" name="addCat" value="">
+			<label>Category</label>
+			<Select class="form-control" name="type">
+				<option value="House">House</option>
+				<option value="Electronics">Electronics</option>
+				<option value="Cars">Cars</option>
+				<option value="Goods">Goods</option>
+			</Select>
 		</div>
 		<div class="form-group">
 			<label>price</label>
-			<input class="form-control" type="text" name="addPrice" value="">
+			<input class="form-control" type="price" name="price" value="">
 		</div>
 		<div class="form-group">
 			<label>description</label>
-			<textarea class="form-control" name="addDescription" id="" cols="10" rows="3">
+			<textarea class="form-control" name="description" id="" cols="10" rows="3">
 
 			</textarea>
 		</div>
 
 		<div class="form-group">
 			<label>image</label>
-			<input class="form-control-file" type="file" name="imageUpload">
+			<input class="form-control-file" type="file" name="img">
 		</div>
 	</div>
 		<button class="btn btn-primary">Submit</button>

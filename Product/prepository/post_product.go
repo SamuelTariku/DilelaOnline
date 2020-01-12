@@ -1,4 +1,4 @@
-package repository
+package prepository
 
 import (
 	"../../entity"
@@ -57,7 +57,7 @@ func (p *PostProductRepo) UpdateP(pro entity.Product) error {
 }
 
 func (p *PostProductRepo) StoreP(pro entity.Product) error {
-	_, err := p.conn.Exec("INSERT INTO product (name,ptype,price,description,categories,Image)"+"values($1,$2,$3,$4,$5,$6)", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image)
+	_, err := p.conn.Exec("INSERT INTO product (name,ptype,price,description,Image,createdat)"+"values($1,$2,$3,$4,$5,current_timestamp)", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image)
 	if err != nil {
 		panic(err)
 		return errors.New("failed to store")
@@ -65,7 +65,7 @@ func (p *PostProductRepo) StoreP(pro entity.Product) error {
 	return nil
 }
 
-func (p *PostProductRepo) Deletep(id int) error {
+func (p *PostProductRepo) DeleteP(id int) error {
 	_, err := p.conn.Exec("DELETE FROM product WHERE id=$1", id)
 	if err != nil {
 		return errors.New("failed to delete")
@@ -74,7 +74,7 @@ func (p *PostProductRepo) Deletep(id int) error {
 }
 
 func (p *PostProductRepo) SearchProduct(prod string) ([]entity.Product, error) {
-	rows, err := p.conn.Query("SELECT * FROM products WHERE name LIKE $1", "%"+prod+"%")
+	rows, err := p.conn.Query("SELECT * FROM product WHERE name LIKE $1", "%"+prod+"%")
 
 	if err != nil {
 		errors.New("could not query")

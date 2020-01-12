@@ -4,6 +4,7 @@ import (
 	"../../../balance"
 	"../../../entity"
 	"../../../users"
+
 	//"../../../users/brepository"
 	//"../../../users/bservice"
 	//"database/sql"
@@ -32,10 +33,15 @@ func NewAdminUserHandler(t *template.Template, ur users.UserService, b balance.B
 	return &AdminUserHandler{tmpl: t, userSrv: ur, balsrv: b}
 }
 
-func (userService *AdminUserHandler) Index_handler(w http.ResponseWriter, req *http.Request) {
-	userService.tmpl.ExecuteTemplate(w, "index.html", nil)
-}
 func (userService *AdminUserHandler) MySalesHandler(w http.ResponseWriter, req *http.Request) {
+	/*
+		if req.Method == http.MethodPost {
+			addName := req.URL.Query().Get("addName")
+			addPrice := req.URL.Query().Get("addPrice")
+
+		}
+	*/
+
 	userService.tmpl.ExecuteTemplate(w, "mySales.html", nil)
 }
 
@@ -84,7 +90,12 @@ func (userService *AdminUserHandler) ProfileHandler(w http.ResponseWriter, req *
 func (userService *AdminUserHandler) Login(w http.ResponseWriter, req *http.Request) {
 	userService.tmpl.ExecuteTemplate(w, "signIn.html", nil)
 }
-
+func (userService *AdminUserHandler) ErrorPage(w http.ResponseWriter, req *http.Request) {
+	i := "<!DOCTYPE html><html><head></head><body>ERROR 404</body>"
+	t := template.New("")
+	t, _ = t.Parse(i)
+	t.Execute(w, nil)
+}
 func (userService *AdminUserHandler) Signuppage(w http.ResponseWriter, req *http.Request) {
 	userService.tmpl.ExecuteTemplate(w, "signup.html", nil)
 }

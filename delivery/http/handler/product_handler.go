@@ -21,6 +21,111 @@ func NewAdminSellerHandler(t *template.Template, s product.ProductService) *Admi
 	return &AdminProductHandler{tmpl: t, productSrv: s}
 }
 
+func (productSrv *AdminProductHandler) ProductPage(w http.ResponseWriter, req *http.Request) {
+	type productDisplay struct {
+		Image        string
+		ProductName  string
+		ProductDesc  string
+		ProductPrice string
+	}
+	if req.Method == http.MethodGet {
+		id := req.URL.Query().Get("id")
+		if len(id) < 1 {
+			http.Redirect(w, req, "/error", 404)
+			return
+		}
+		rID, err := strconv.Atoi(id)
+		if err != nil {
+			panic(err)
+		}
+
+		product, err := productSrv.productSrv.Product(rID)
+		if err != nil {
+			panic(err)
+		}
+
+		data := productDisplay{product.Image,
+			product.Name,
+			product.Description,
+			strconv.FormatFloat(product.Price,
+				'f',
+				2, 64)}
+		productSrv.tmpl.ExecuteTemplate(w, "newProduct.html", data)
+	} else {
+		http.Redirect(w, req, "/error", 404)
+	}
+
+}
+
+func (productSrv *AdminProductHandler) Index_handler(w http.ResponseWriter, req *http.Request) {
+
+	products, err := productSrv.productSrv.Products()
+	if err != nil {
+		panic(err)
+	}
+	type ProductData struct {
+		Image string
+		Link  string
+		Price string
+	}
+	productHouse := []ProductData{}
+	productCars := []ProductData{}
+	productElect := []ProductData{}
+	productGoods := []ProductData{}
+	house := true
+	cars := true
+	elect := true
+	goods := true
+
+	for i := 0; i < len(products); i = i + 1 {
+
+		if products[i].Ptype == "House" && house {
+			productHouse = append(productHouse, ProductData{
+				products[i].Image,
+				strconv.Itoa(int(products[i].ID)),
+				strconv.FormatFloat(products[i].Price, 'f', 2, 64)})
+		} else if products[i].Ptype == "Cars" && cars {
+			productCars = append(productCars, ProductData{
+				products[i].Image,
+				strconv.Itoa(int(products[i].ID)),
+				strconv.FormatFloat(products[i].Price, 'f', 2, 64)})
+		} else if products[i].Ptype == "Electronics" && elect {
+			productElect = append(productElect, ProductData{
+				products[i].Image,
+				strconv.Itoa(int(products[i].ID)),
+				strconv.FormatFloat(products[i].Price, 'f', 2, 64)})
+		} else if goods {
+			productGoods = append(productGoods, ProductData{
+				products[i].Image,
+				strconv.Itoa(int(products[i].ID)),
+				strconv.FormatFloat(products[i].Price, 'f', 2, 64)})
+		}
+
+		if len(productHouse) > 4 {
+			house = false
+		} else if len(productElect) > 4 {
+			elect = false
+		} else if len(productCars) > 4 {
+			cars = false
+		} else if len(productGoods) > 4 {
+			goods = false
+		}
+	}
+
+	data := struct {
+		HouseData []ProductData
+		ElectData []ProductData
+		CarsData  []ProductData
+		GoodsData []ProductData
+	}{
+		productHouse,
+		productElect,
+		productCars,
+		productGoods}
+
+	productSrv.tmpl.ExecuteTemplate(w, "index.html", data)
+}
+
 func writeFile(mf *multipart.File, fname string) {
 
 	wd, err := os.Getwd()
@@ -29,7 +134,7 @@ func writeFile(mf *multipart.File, fname string) {
 		panic(err)
 	}
 
-	path := filepath.Join(wd, "../", "../", "../", "ui", "assets", "img", fname)
+	path := filepath.Join(wd, "../", "../", "ui", "assets", "images", fname)
 	image, err := os.Create(path)
 
 	if err != nil {
@@ -67,17 +172,14 @@ func (pserv *AdminProductHandler) NewSellerProducts(w http.ResponseWriter, r *ht
 		prod.Image = fh.Filename
 
 		writeFile(&mf, fh.Filename)
+		err = pserv.productSrv.StoreP(prod)
 		if err != nil {
 			panic(err)
 		}
-		http.Redirect(w, r, "#", http.StatusSeeOther)
+		http.Redirect(w, r, "/mySales", http.StatusSeeOther)
 
 	} else {
-		err := pserv.tmpl.ExecuteTemplate(w, "#", nil)
-		if err != nil {
-			panic(err.Error())
-		}
-
+		http.Redirect(w, r, "/mySales", http.StatusSeeOther)
 	}
 }
 
@@ -138,16 +240,15 @@ func (pserv *AdminProductHandler) SearchProducts(w http.ResponseWriter, r *http.
 	if r.Method == http.MethodGet {
 		ids := r.URL.Query().Get("search")
 		if len(ids) == 0 {
-			http.Redirect(w, r, "#", 303)
+			http.Redirect(w, r, "/error", 404)
 		}
 		results, err := pserv.productSrv.SearchProduct(ids)
-
 		if err != nil {
 			panic(err)
 		}
-		pserv.tmpl.ExecuteTemplate(w, "#", results)
+		pserv.tmpl.ExecuteTemplate(w, "search.html", results)
 	} else {
-		http.Redirect(w, r, "#", http.StatusSeeOther)
+		http.Redirect(w, r, "/error", http.StatusSeeOther)
 	}
 }
 

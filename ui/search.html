@@ -124,83 +124,24 @@
 				</form>
 			</div>
 		</div>
+		{{range .}}
+			{{with .}}
 		<div class="search-product">
-			<a href="#">
-			<img src="assets\images\img1.jpg" alt="product">
+			<a href="/product?id={{.ID}}">
+			<img src="assets\images\{{.Image}}" alt="product">
 
 			<div class="product-info">
-			<h2>product name</h2>
-			<p>product description</p>
-			<p>$255</p>
+			<h2>{{.Name}}</h2>
+			<p>{{.Description}}</p>
+			<p>${{.Price}}</p>
 			</div>
 			</a>
 			<div class="product-cart">
 				<button class="btn btn-primary" type="button" name="button">ADD TO CART</button>
 			</div>
 		</div>
-
-		<div class="search-product">
-			<a href="#">
-			<img src="assets\images\img1.jpg" alt="product">
-
-			<div class="product-info">
-			<h2>product name</h2>
-			<p>product description</p>
-			<p>$255</p>
-			</div>
-			</a>
-			<div class="product-cart">
-				<button class="btn btn-primary" type="button" name="button">ADD TO CART</button>
-			</div>
-		</div>
-
-
-		<div class="search-product">
-			<a href="#">
-			<img src="assets\images\img1.jpg" alt="product">
-
-			<div class="product-info">
-			<h2>product name</h2>
-			<p>product description</p>
-			<p>$255</p>
-			</div>
-			</a>
-			<div class="product-cart">
-				<button class="btn btn-primary" type="button" name="button">ADD TO CART</button>
-			</div>
-		</div>
-
-		<div class="search-product">
-			<a href="#">
-			<img src="assets\images\img1.jpg" alt="product">
-
-			<div class="product-info">
-			<h2>product name</h2>
-			<p>product description</p>
-			<p>$255</p>
-			</div>
-			</a>
-			<div class="product-cart">
-				<button class="btn btn-primary" type="button" name="button">ADD TO CART</button>
-			</div>
-		</div>
-
-		<div class="search-product">
-			<a href="#">
-			<img src="assets\images\img1.jpg" alt="product">
-
-			<div class="product-info">
-			<h2>product name</h2>
-			<p>product description</p>
-			<p>$255</p>
-			</div>
-			</a>
-			<div class="product-cart">
-				<button class="btn btn-primary" type="button" name="button">ADD TO CART</button>
-			</div>
-		</div>
-
-
+				{{end}}
+		{{end}}
 		<div class="search-box-bottom">
 			<!-- Replace 10 with page numbers !-->
 			<script type="text/javascript">

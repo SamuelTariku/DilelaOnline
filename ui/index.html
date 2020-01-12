@@ -23,8 +23,8 @@
 	<div>
 	</div>
 	!-->
-	<form class="navbar-form navbar-left" method="get" action="search.html" role="search">
-			<input type="text" class="form-control" placeholder="search">
+	<form class="navbar-form navbar-left" method="get" action="/search" role="search">
+			<input type="text" class="form-control" placeholder="search" name="search">
 			<button type="submit" class="btn btn-light">search</button>
 	</form>
 
@@ -91,44 +91,18 @@
 			<h2>Houses</h2>
 			<!-- List top houses using include !-->
 			<ul class="topProductList list-unstyled">
-
-							<li>
-								<a href="#">
+				{{range .HouseData}}
+					{{with .}}
+						<li>
+							<a href="/product?id={{.Link}}">
 								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
+									<img src="assets\images\{{.Image}}" alt="image">
+									<p>${{.Price}}</p>
 								</div>
 							</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
+						</li>
+					{{end}}
+				{{end}}
 			</ul>
 			<a href="houses.html" style="text-align: right"><p>See more houses...</p></a>
 		</div>
@@ -137,44 +111,18 @@
 			<h2>Cars</h2>
 			<!-- List top cars using include !-->
 			<ul class="topProductList list-unstyled">
-
-							<li>
-								<a href="#">
+				{{range .CarsData}}
+					{{with .}}
+						<li>
+							<a href="/product?id={{.Link}}">
 								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
+									<img src="assets\images\{{.Image}}" alt="image">
+									<p>${{.Price}}</p>
 								</div>
 							</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
+						</li>
+					{{end}}
+				{{end}}
 			</ul>
 			<a href="cars.html" style="text-align: right"><p>See more cars...</p></a>
 		</div>
@@ -183,44 +131,18 @@
 			<h2>Electronics</h2>
 			<!-- List top electronics using include !-->
 			<ul class="topProductList list-unstyled">
-
-							<li>
-								<a href="#">
+				{{range .ElectData}}
+					{{with .}}
+						<li>
+							<a href="/product?id={{.Link}}">
 								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
+									<img src="assets\images\{{.Image}}" alt="image">
+									<p>${{.Price}}</p>
 								</div>
 							</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
+						</li>
+					{{end}}
+				{{end}}
 			</ul>
 			<a href="electronics.html" style="text-align: right"><p>See more electronics...</p></a>
 		</div>
@@ -229,48 +151,23 @@
 			<h2>Goods</h2>
 			<!-- List top other using include !-->
 			<ul class="topProductList list-unstyled">
-
+				{{range .GoodsData}}
+					{{with .}}
 							<li>
-								<a href="#">
+								<a href="/product?id={{.Link}}">
 								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
+									<img src="assets\images\{{.Image}}" alt="image">
+									<p>${{.Price}}</p>
 								</div>
 								</a>
 							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-								</a>
-							</li>
-
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
-							<li>
-								<a href="#">
-								<div class="product">
-									<img src="assets\images\img1.jpg" alt="houseImage">
-									<p>$500</p>
-								</div>
-							</a>
-							</li>
-
+					{{end}}
+				{{end}}
 			</ul>
 			<a href="goods.html" style="text-align: right"><p>See more goods...</p></a>
 
 		</div>
+	</div>
 
 	</section>
 	<aside>
