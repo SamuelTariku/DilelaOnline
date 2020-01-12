@@ -26,12 +26,11 @@ func (commRepo *PostCommRepository) Comments() ([]entity.Comment, error) {
 		return nil, errors.New("could not query the database")
 	}
 	defer rows.Close()
-
 	comms := []entity.Comment{}
 
 	for rows.Next() {
 		comm := entity.Comment{}
-		err = rows.Scan(&comm.ID, &comm.Name, &comm.Message, &comm.Email, &comm.PlacedAt)
+		err = rows.Scan(&comm.ID, &comm.UserID, &comm.Name, &comm.Message, &comm.Email, &comm.Rating, &comm.PlacedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -49,9 +48,11 @@ func (commRepo *PostCommRepository) CommentWithID(id int) (entity.Comment, error
 
 	err := row.Scan(&u.ID, &u.Name, &u.Message, &u.Email, &u.PlacedAt)
 
+	log.Println(u.UserID)
 	log.Println(u.Name)
 	log.Println(u.Message)
 	log.Println(u.Email)
+	log.Println(u.Rating)
 	log.Println(u.PlacedAt)
 
 	if err != nil {
@@ -65,8 +66,8 @@ func (commRepo *PostCommRepository) CommentWithID(id int) (entity.Comment, error
 //
 func (commRepo *PostCommRepository) UpdateComment(u entity.Comment) error {
 
-	_, err := commRepo.conn.Exec("UPDATE comments SET name=$1,message=$2,email=$3,commTime=$4 WHERE id=$5",
-		u.Name, u.Message, u.Email, u.PlacedAt, u.ID)
+	_, err := commRepo.conn.Exec("UPDATE comments SET userID =$1,name=$2,message=$3,email=$4,rating =$5, 5commTime=$6 WHERE id=$7",
+		u.UserID, u.Name, u.Message, u.Email, u.Rating, u.PlacedAt, u.ID)
 	if err != nil {
 		return errors.New("Update has failed")
 	}
@@ -88,8 +89,8 @@ func (commRepo *PostCommRepository) DeleteComment(id int) error {
 //
 func (commRepo *PostCommRepository) StoreComment(u entity.Comment) error {
 
-	_, err := commRepo.conn.Exec("INSERT INTO comment (name, message, email, cTime)"+
-		" values($1, $2, $3, $4)", u.Name, u.Message, u.Email, u.PlacedAt)
+	_, err := commRepo.conn.Exec("INSERT INTO comment (userID, name, message, email, rating, cTime)"+
+		" values($1, $2, $3, $4, $5, $6)", u.UserID, u.Name, u.Message, u.Email, u.Rating, u.PlacedAt)
 
 	if err != nil {
 		//panic(err)
