@@ -54,7 +54,8 @@ type Comment struct {
 	Email    string
 	PlacedAt time.Time
 }
-type Product struct {
+
+/*type Product struct {
 	ID          uint
 	Name        string
 	Ptype       string
@@ -68,3 +69,4 @@ type Balance struct {
 	ID          uint
 	YourBalance float64
 }
+*/

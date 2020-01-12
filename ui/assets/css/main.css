@@ -49,13 +49,6 @@ footer {
 .bottomContent {
 	margin: 20px 0;
 }
-.bg-city{
-	background-image: url('assets/images/backiee-10377.jpg');
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
-
-}
 
 .product {
 	margin: 0 5px;
@@ -272,6 +265,39 @@ h2{
 	width: 90%;
 	margin: 0 auto;
 	padding: 1vw;
+}
+
+.add-popup{
+	display:none;
+	position: fixed;
+	height:100%;
+	width: 100%;
+	top:0;
+	background-color: grey;
+	z-index: 1;
+	color: white;
+	opacity: 0.90;
+}
+.add-popup-inner{
+	background-color: black;
+	margin-left:24%;
+	margin-top:1%;
+	border:1px black solid;
+	border-radius: 1vw;
+	padding:1vw;
+	width:50vw;
+}
+
+.add-popup form .row{
+	margin-bottom: 2vw;
+}
+.add-popup form .form-group{
+	margin: 1vw;
+	width: 20vw;
+}
+
+.add-popup form hr{
+	background-color: white;
 }
 
 .category-main{

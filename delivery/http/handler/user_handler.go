@@ -4,6 +4,7 @@ import (
 	"../../../balance"
 	"../../../entity"
 	"../../../users"
+
 	//"../../../users/brepository"
 	//"../../../users/bservice"
 	//"database/sql"
@@ -21,23 +22,88 @@ type AdminUserHandler struct {
 	balsrv  balance.BalanceService
 }
 
+type SessionHandler struct {
+	active bool
+	user   entity.User
+}
+
+var session SessionHandler
+
 func NewAdminUserHandler(t *template.Template, ur users.UserService, b balance.BalanceService) *AdminUserHandler {
 	return &AdminUserHandler{tmpl: t, userSrv: ur, balsrv: b}
 }
 
-func (userService *AdminUserHandler) Index_handler(w http.ResponseWriter, req *http.Request) {
-	userService.tmpl.ExecuteTemplate(w, "index.html", nil)
+func (userService *AdminUserHandler) MySalesHandler(w http.ResponseWriter, req *http.Request) {
+	/*
+		if req.Method == http.MethodPost {
+			addName := req.URL.Query().Get("addName")
+			addPrice := req.URL.Query().Get("addPrice")
+
+		}
+	*/
+
+	userService.tmpl.ExecuteTemplate(w, "mySales.html", nil)
+}
+
+func (userService *AdminUserHandler) ProfileHandler(w http.ResponseWriter, req *http.Request) {
+	type displayItem struct {
+		ItemName  string
+		ItemPrice float64
+	}
+	type profileData struct {
+		Username        string
+		AccountNo       float64
+		ShoppingCart    []displayItem
+		ShoppingHistory []displayItem
+	}
+	if session.active {
+
+		balanceAmmount, err := userService.balsrv.Balance(int(session.user.ID))
+		if err != nil {
+			panic(err)
+		}
+		//Add shopping cart table
+
+		shoppingCartData := []displayItem{
+			displayItem{"Item 1", 200.5},
+			displayItem{"Item 2", 1450.6},
+		}
+
+		shoppingHistoryData := []displayItem{
+			displayItem{"Item 1", 200.5},
+			displayItem{"Item 2", 1450.6},
+		}
+
+		data := profileData{session.user.FirstName,
+			balanceAmmount.YourBalance, shoppingCartData,
+			shoppingHistoryData}
+		err = userService.tmpl.ExecuteTemplate(w, "profile.html", data)
+		if err != nil {
+			panic(err)
+		}
+
+	} else {
+		http.Redirect(w, req, "/", 303)
+	}
 }
 
 func (userService *AdminUserHandler) Login(w http.ResponseWriter, req *http.Request) {
 	userService.tmpl.ExecuteTemplate(w, "signIn.html", nil)
 }
-
+func (userService *AdminUserHandler) ErrorPage(w http.ResponseWriter, req *http.Request) {
+	i := "<!DOCTYPE html><html><head></head><body>ERROR 404</body>"
+	t := template.New("")
+	t, _ = t.Parse(i)
+	t.Execute(w, nil)
+}
 func (userService *AdminUserHandler) Signuppage(w http.ResponseWriter, req *http.Request) {
 	userService.tmpl.ExecuteTemplate(w, "signup.html", nil)
 }
 
 func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, req *http.Request) {
+	if session.active {
+		http.Redirect(w, req, "/profile", http.StatusSeeOther)
+	}
 	if req.Method != "POST" {
 		http.Redirect(w, req, "/registration", http.StatusSeeOther)
 		return
@@ -55,7 +121,10 @@ func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, re
 	err = userService.userSrv.StoreUser(usr)
 	use, err := userService.userSrv.User(usr.Email)
 	err = userService.balsrv.StoreId(use.ID)
-
+	balanceEmpty := entity.Balance{}
+	balanceEmpty.ID = use.ID
+	balanceEmpty.YourBalance = 0
+	userService.balsrv.Storeb(int(balanceEmpty.ID), balanceEmpty)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -66,6 +135,9 @@ func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, re
 }
 
 func (userService *AdminUserHandler) AdminLogin(w http.ResponseWriter, req *http.Request) {
+	if session.active {
+		http.Redirect(w, req, "/profile", http.StatusSeeOther)
+	}
 	if req.Method != "POST" {
 		http.Redirect(w, req, "/signinpage", http.StatusSeeOther)
 		return
@@ -92,7 +164,10 @@ func (userService *AdminUserHandler) AdminLogin(w http.ResponseWriter, req *http
 		if err != nil {
 			panic(err.Error())
 		}
-		err = userService.tmpl.ExecuteTemplate(w, "profile.html", user)
+		//TEMPORARY
+		//WILL SET UP SESSIONS
+		session = SessionHandler{true, user}
+		http.Redirect(w, req, "/profile", http.StatusSeeOther)
 	}
 	http.Redirect(w, req, "/signinpage", 303)
 	if err != nil {

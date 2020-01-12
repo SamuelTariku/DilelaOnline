@@ -55,10 +55,58 @@
 </nav>
 
 </header>
+
+<!--
+	Building Add product popup
+-->
+<div class="add-popup" id="addPopup">
+	<div class="add-popup-inner">
+		<button class="close" onclick="document.getElementById('addPopup').style.display = 'None'">X</button>
+	<form action="/newProduct" class="" method="POST" enctype="multipart/form-data">
+		<h3>Add product</h3>
+		<hr>
+		<div class="row">
+		<div class="form-group">
+			<label>name</label>
+			<input class="form-control" type="text" name="name" value="">
+		</div>
+		<div class="form-group">
+			<label>Category</label>
+			<Select class="form-control" name="type">
+				<option value="House">House</option>
+				<option value="Electronics">Electronics</option>
+				<option value="Cars">Cars</option>
+				<option value="Goods">Goods</option>
+			</Select>
+		</div>
+		<div class="form-group">
+			<label>price</label>
+			<input class="form-control" type="price" name="price" value="">
+		</div>
+		<div class="form-group">
+			<label>description</label>
+			<textarea class="form-control" name="description" id="" cols="10" rows="3">
+
+			</textarea>
+		</div>
+
+		<div class="form-group">
+			<label>image</label>
+			<input class="form-control-file" type="file" name="img">
+		</div>
+	</div>
+		<button class="btn btn-primary">Submit</button>
+	
+	</form>
+	</div>
+</div>
+<!--
+	End of popup
+-->
 <div class="seller-main">
 <nav class="seller-nav navbar">
 	<ul class="seller-navlist nav">
-		<li><a href="#">Add product</a></li>
+		<li><a href="#" onclick="document.getElementById('addPopup').style.display = 'block'">Add product</a></li>
 		<li><a href="#">Remove product</a></li>
 		<li><a href="#">Edit product</a></li>
 	</ul>
@@ -67,7 +115,7 @@
 	<div class="product-top">
 	<h3>Your products</h3>
 	<div class="seller-search">
-		<form class="" action="index.html" method="post">
+		<form class="" action="mySales.html" method="post">
 			<input type="search" name="" value="">
 			<button type="button" name="button">search</button>
 		</form>

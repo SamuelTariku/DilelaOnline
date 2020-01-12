@@ -4,13 +4,15 @@ import (
 	//"../../entity"
 	"../../balance/brepository"
 	"../../balance/bservice"
+	"../../product/prepository"
+	"../../product/pservice"
 	"../../users/repository"
 	"../../users/service"
 	"../http/handler"
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 	"html/template"
-
 	"net/http"
 )
 
@@ -22,14 +24,16 @@ const (
 	host     = "localhost"
 	port     = 5432
 	user     = "postgres"
-	password = "dagim@123"
+	password = "password"
 	dbname   = "onlinedb"
 )
 
 var userService *service.UserService
 var balanceService *bservice.BalanceService
+var productService *pservice.ProductService
 
 func main() {
+	/* Database connection */
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
@@ -43,6 +47,9 @@ func main() {
 	if err = db.Ping(); err != nil {
 		panic(err)
 	}
+
+	/* ---------------------- */
+
 	tmpl := template.Must(template.ParseGlob("../../ui/*.html"))
 
 	usrRepo := repository.NewUserPostRepo(db)
@@ -51,17 +58,26 @@ func main() {
 	br := brepository.NewBalanceRepo(db)
 	balanceService = bservice.NewBalanceService(br)
 
+	productRep := prepository.NewPostProductRepo(db)
+	productService = pservice.NewProductService(productRep)
+
 	adminUserHandler := handler.NewAdminUserHandler(tmpl, userService, balanceService)
+	adminProductHandler := handler.NewAdminSellerHandler(tmpl, productService)
 
 	fs := http.FileServer(http.Dir("../../ui/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/signuppage", adminUserHandler.Signuppage)
-	http.HandleFunc("/", adminUserHandler.Index_handler)
+	http.HandleFunc("/error", adminUserHandler.ErrorPage)
+	http.HandleFunc("/", adminProductHandler.Index_handler)
 	http.HandleFunc("/signinpage", adminUserHandler.Login)
 	http.HandleFunc("/signup", adminUserHandler.AdminRegistration)
 	http.HandleFunc("/signin", adminUserHandler.AdminLogin)
-
+	http.HandleFunc("/profile", adminUserHandler.ProfileHandler)
+	http.HandleFunc("/mySales", adminUserHandler.MySalesHandler)
+	http.HandleFunc("/newProduct", adminProductHandler.NewSellerProducts)
+	http.HandleFunc("/product", adminProductHandler.ProductPage)
+	http.HandleFunc("/search", adminProductHandler.SearchProducts)
 	http.ListenAndServe(":8080", nil)
 
 }

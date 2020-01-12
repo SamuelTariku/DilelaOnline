@@ -63,15 +63,15 @@
 		<div class="product-rating">
 			5 stars
 		</div>
-		<img src="assets\images\img1.jpg" alt="product-image">
+		<img src="assets\images\{{.Image}}" alt="product-image">
 		<div class="product-info">
 
 			<div>
-				<h2>product name</h2>
-				<p>product description</p>
+				<h2>{{.ProductName}}</h2>
+				<p>{{.ProductDesc}}</p>
 			</div>
 			<div class="product-price">
-				<p>$255</p>
+				<p>${{.ProductPrice}}</p>
 			</div>
 		</div>
 	</div>
@@ -105,49 +105,6 @@
 	</div>
 	</div>
 	<div class="main-product-bottom">
-		<h3>More in this category</h3>
-		<!-- List top other using include !-->
-		<ul class="topProductList list-unstyled">
-
-						<li>
-							<a href="#">
-							<div class="product">
-								<img src="assets\images\img1.jpg" alt="houseImage">
-								<p>$500</p>
-							</div>
-							</a>
-						</li>
-
-						<li>
-							<a href="#">
-							<div class="product">
-								<img src="assets\images\img1.jpg" alt="houseImage">
-								<p>$500</p>
-							</div>
-							</a>
-						</li>
-
-
-						<li>
-							<a href="#">
-							<div class="product">
-								<img src="assets\images\img1.jpg" alt="houseImage">
-								<p>$500</p>
-							</div>
-						</a>
-						</li>
-
-						<li>
-							<a href="#">
-							<div class="product">
-								<img src="assets\images\img1.jpg" alt="houseImage">
-								<p>$500</p>
-							</div>
-						</a>
-						</li>
-
-		</ul>
-		<a href="goods.html" style="text-align: right"><p>See more goods...</p></a>
 
 	</div>
 </div>
