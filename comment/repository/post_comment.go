@@ -63,7 +63,7 @@ func (commRepo *PostCommRepository) CommentWithID(id int) (entity.Comment, error
 
 }
 
-//
+//comment update
 func (commRepo *PostCommRepository) UpdateComment(u entity.Comment) error {
 
 	_, err := commRepo.conn.Exec("UPDATE comments SET userID =$1,name=$2,message=$3,email=$4,rating =$5, 5commTime=$6 WHERE id=$7",
@@ -75,7 +75,7 @@ func (commRepo *PostCommRepository) UpdateComment(u entity.Comment) error {
 	return nil
 }
 
-//
+//comment delete
 func (commRepo *PostCommRepository) DeleteComment(id int) error {
 
 	_, err := commRepo.conn.Exec("DELETE FROM comments WHERE id=$1", id)
@@ -86,7 +86,7 @@ func (commRepo *PostCommRepository) DeleteComment(id int) error {
 	return nil
 }
 
-//
+//comment store
 func (commRepo *PostCommRepository) StoreComment(u entity.Comment) error {
 
 	_, err := commRepo.conn.Exec("INSERT INTO comment (userID, name, message, email, rating, cTime)"+
