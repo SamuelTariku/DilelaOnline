@@ -28,14 +28,12 @@ type Balance struct {
 	YourBalance float64
 }
 
-// Order represents customer order
-// type Order struct {
-// 	ID       uint
-// 	PlacedAt time.Time
-// 	UserID   uint
-// 	ItemID   uint
-// 	Quantity uint
-// }
+type Order struct {
+	ID       uint
+	PlacedAt time.Time
+	UserID   uint
+	ItemID   uint
+}
 
 // User represents application user
 type User struct {
@@ -53,18 +51,4 @@ type Comment struct {
 	Message  string
 	Email    string
 	PlacedAt time.Time
-}
-type Product struct {
-	ID          uint
-	Name        string
-	Ptype       string
-	Price       float64
-	Description string
-	CreatedAt   time.Time
-	//Categories  Category
-	Image string
-}
-type Balance struct {
-	ID          uint
-	YourBalance float64
 }
