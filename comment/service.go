@@ -6,7 +6,7 @@ import "../entity"
 type CommentService interface {
 	Comments() ([]entity.Comment, error)
 	Comment(id uint) (entity.Comment, error)
-	UpdateComment(comment entity.Comment) (entity.Comment, error)
-	DeleteComment(id uint) (entity.Comment, error)
-	StoreComment(comment entity.Comment) (entity.Comment, error)
+	UpdateComment(comment entity.Comment) error
+	DeleteComment(id uint) error
+	StoreComment(comment entity.Comment) error
 }

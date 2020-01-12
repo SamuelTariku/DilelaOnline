@@ -14,8 +14,10 @@ type User struct {
 // Comment represents comments forwarded by application users
 type Comment struct {
 	ID       uint
+	UserID   uint
 	Name     string
 	Message  string
 	Email    string
+	Rating   uint
 	PlacedAt time.Time
 }
