@@ -2,6 +2,33 @@ package entity
 
 import "time"
 
+// Category represents ordermenu Category
+// Item represents type of products
+type Product struct {
+	ID          uint
+	Name        string
+	Ptype       string
+	Price       float64
+	Description string
+	CreatedAt   time.Time
+	//Categories  Category
+	Image string
+}
+
+type Balance struct {
+	ID          uint
+	YourBalance float64
+}
+
+// Order represents customer order
+// type Order struct {
+// 	ID       uint
+// 	PlacedAt time.Time
+// 	UserID   uint
+// 	ItemID   uint
+// 	Quantity uint
+// }
+
 // User represents application user
 type User struct {
 	ID        uint
@@ -14,10 +41,8 @@ type User struct {
 // Comment represents comments forwarded by application users
 type Comment struct {
 	ID       uint
-	UserID   uint
 	Name     string
 	Message  string
 	Email    string
-	Rating   uint
 	PlacedAt time.Time
 }
