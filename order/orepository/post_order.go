@@ -52,7 +52,7 @@ func (o *PostOrderRepo) UpdateO(ord entity.Order) error {
 }
 
 func (o *PostOrderRepo) StoreO(ord entity.Order) error {
-	_, err := o.conn.Exec("INSERT INTO order (userid,itemid)"+"values($1,$2)", ord.UserID, ord.ItemID)
+	_, err := o.conn.Exec("INSERT INTO order (userid,itemid,placedat)"+"values($1,$2,current_timestamp)", ord.UserID, ord.ItemID)
 	if err != nil {
 		panic(err)
 		return errors.New("failed to store")

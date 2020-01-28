@@ -12,7 +12,15 @@ type Product struct {
 	Description string
 	CreatedAt   time.Time
 	//Categories  Category
-	Image string
+	Image  string
+	UserID uint
+}
+
+type Order struct {
+	ID       uint
+	PlacedAt time.Time
+	UserID   uint
+	ItemID   uint
 }
 
 type Balance struct {
@@ -40,9 +48,12 @@ type User struct {
 
 // Comment represents comments forwarded by application users
 type Comment struct {
-	ID       uint
-	Name     string
-	Message  string
-	Email    string
-	PlacedAt time.Time
+	ID        uint
+	Name      string
+	Message   string
+	Email     string
+	PlacedAt  time.Time
+	UserID    uint
+	ProductID uint
+	Rating    uint
 }

@@ -1,0 +1,95 @@
+package srepository
+
+import (
+	"../../entity"
+	"database/sql"
+	"errors"
+)
+
+type PostProductRepo struct {
+	conn *sql.DB
+}
+
+func NewPostProductRepo(Conn *sql.DB) *PostProductRepo {
+	return &PostProductRepo{conn: Conn}
+}
+
+func (p *PostProductRepo) Products() ([]entity.Product, error) {
+	rows, err := p.conn.Query("SELECT * FROM soldproduct;")
+	if err != nil {
+		return nil, errors.New("Could not query")
+	}
+	defer rows.Close()
+	prod := []entity.Product{}
+
+	for rows.Next() {
+		product := entity.Product{}
+		err = rows.Scan(&product.ID, &product.Name, &product.Ptype, &product.Price, &product.Description, &product.CreatedAt, &product.Image)
+		if err != nil {
+			return nil, err
+		}
+		prod = append(prod, product)
+	}
+
+	return prod, nil
+}
+
+func (p *PostProductRepo) Product(id int) (entity.Product, error) {
+	rows := p.conn.QueryRow("SELECT * from soldproduct WHERE id = $1", id)
+
+	prod := entity.Product{}
+
+	err := rows.Scan(&prod.ID, &prod.Name, &prod.Ptype, &prod.Price, &prod.Description, &prod.CreatedAt, &prod.Image)
+
+	if err != nil {
+		return prod, err
+	}
+	return prod, nil
+
+}
+
+func (p *PostProductRepo) UpdateP(pro entity.Product) error {
+	_, err := p.conn.Exec("UPDATE soldproduct SET name = $1, ptype=$2, price=$3, description=$4,Image=$5 WHERE id = $6", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image, pro.ID)
+	if err != nil {
+		return errors.New("update failed")
+	}
+	return nil
+}
+
+func (p *PostProductRepo) StoreP(pro entity.Product) error {
+	_, err := p.conn.Exec("INSERT INTO soldproduct (name,ptype,price,description,Image,createdat)"+"values($1,$2,$3,$4,$5,current_timestamp)", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image)
+	if err != nil {
+		panic(err)
+		return errors.New("failed to store")
+	}
+	return nil
+}
+
+func (p *PostProductRepo) DeleteP(id int) error {
+	_, err := p.conn.Exec("DELETE FROM soldproduct WHERE id=$1", id)
+	if err != nil {
+		return errors.New("failed to delete")
+	}
+	return nil
+}
+
+func (p *PostProductRepo) SearchProduct(prod string) ([]entity.Product, error) {
+	rows, err := p.conn.Query("SELECT * FROM soldproduct WHERE name LIKE $1", "%"+prod+"%")
+
+	if err != nil {
+		errors.New("could not query")
+	}
+	defer rows.Close()
+
+	pr := []entity.Product{}
+	for rows.Next() {
+		product := entity.Product{}
+		err := rows.Scan(&product.ID, &product.Name, &product.Ptype, &product.Price, &product.Description, &product.CreatedAt, &product.Image)
+		if err != nil {
+			return nil, err
+
+		}
+		pr = append(pr, product)
+	}
+	return pr, nil
+}
