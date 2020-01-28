@@ -1,10 +1,13 @@
 package handler
 
 import (
+	"../../../advertisement"
+	"../../../comment"
 	"../../../entity"
 	"../../../product"
 	"html/template"
 	"io"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -15,18 +18,20 @@ import (
 type AdminProductHandler struct {
 	tmpl       *template.Template
 	productSrv product.ProductService
+	commentSrv comment.CommentService
+	advertSrv  advertisement.AdvertService
 }
 
-func NewAdminSellerHandler(t *template.Template, s product.ProductService) *AdminProductHandler {
-	return &AdminProductHandler{tmpl: t, productSrv: s}
+func NewAdminSellerHandler(t *template.Template, s product.ProductService, c comment.CommentService, a advertisement.AdvertService) *AdminProductHandler {
+	return &AdminProductHandler{tmpl: t, productSrv: s, commentSrv: c, advertSrv: a}
 }
 
 func (productSrv *AdminProductHandler) ProductPage(w http.ResponseWriter, req *http.Request) {
+
 	type productDisplay struct {
-		Image        string
-		ProductName  string
-		ProductDesc  string
-		ProductPrice string
+		AverageStars int
+		Product      entity.Product
+		Comments     []entity.Comment
 	}
 	if req.Method == http.MethodGet {
 		id := req.URL.Query().Get("id")
@@ -43,13 +48,23 @@ func (productSrv *AdminProductHandler) ProductPage(w http.ResponseWriter, req *h
 		if err != nil {
 			panic(err)
 		}
-
-		data := productDisplay{product.Image,
-			product.Name,
-			product.Description,
-			strconv.FormatFloat(product.Price,
-				'f',
-				2, 64)}
+		comments, err := productSrv.commentSrv.ProductComment(rID)
+		if err != nil {
+			panic(err)
+		}
+		average := 0
+		if len(comments) > 0 {
+			sum := 0
+			for com := range comments {
+				sum += int(comments[com].Rating)
+			}
+			log.Println(sum)
+			average = sum / len(comments)
+		} else {
+			average = 0
+		}
+		data := productDisplay{average, product,
+			comments}
 		productSrv.tmpl.ExecuteTemplate(w, "newProduct.html", data)
 	} else {
 		http.Redirect(w, req, "/error", 404)
@@ -60,6 +75,10 @@ func (productSrv *AdminProductHandler) ProductPage(w http.ResponseWriter, req *h
 func (productSrv *AdminProductHandler) Index_handler(w http.ResponseWriter, req *http.Request) {
 
 	products, err := productSrv.productSrv.Products()
+	if err != nil {
+		panic(err)
+	}
+	adverts, err := productSrv.advertSrv.Adverts()
 	if err != nil {
 		panic(err)
 	}
@@ -111,19 +130,55 @@ func (productSrv *AdminProductHandler) Index_handler(w http.ResponseWriter, req 
 			goods = false
 		}
 	}
+	//HOTFIX FOR CAROUSEL
+	adsProduct := []entity.Product{}
+	for i := 0; i < len(adverts); i = i + 1 {
+		advert, err := productSrv.productSrv.Product(int(adverts[i].ProductID))
+		if err != nil {
+			panic(err)
+		}
+		adsProduct = append(adsProduct, advert)
+	}
+	if len(adsProduct) < 3 {
+		adsProduct = append(adsProduct, entity.Product{Image: "img1.jpg"})
+		if len(adsProduct) < 3 {
+			adsProduct = append(adsProduct, entity.Product{Image: "img1.jpg"})
+			if len(adsProduct) < 3 {
+				adsProduct = append(adsProduct, entity.Product{Image: "img1.jpg"})
+			}
+		}
+	}
 
+	ads := struct {
+		FirstProduct  entity.Product
+		SecondProduct entity.Product
+		ThirdProduct  entity.Product
+	}{
+		adsProduct[0],
+		adsProduct[1],
+		adsProduct[2]}
+	//---------------------
 	data := struct {
+		SliderAdvert struct {
+			FirstProduct  entity.Product
+			SecondProduct entity.Product
+			ThirdProduct  entity.Product
+		}
 		HouseData []ProductData
 		ElectData []ProductData
 		CarsData  []ProductData
 		GoodsData []ProductData
 	}{
+		ads,
 		productHouse,
 		productElect,
 		productCars,
 		productGoods}
 
-	productSrv.tmpl.ExecuteTemplate(w, "index.html", data)
+	err = productSrv.tmpl.ExecuteTemplate(w, "index.html", data)
+	if err != nil{
+		panic(err)
+	}
 }
 
 func writeFile(mf *multipart.File, fname string) {
@@ -170,6 +225,7 @@ func (pserv *AdminProductHandler) NewSellerProducts(w http.ResponseWriter, r *ht
 		defer mf.Close()
 
 		prod.Image = fh.Filename
+		prod.UserID = OldSession.user.ID
 
 		writeFile(&mf, fh.Filename)
 		err = pserv.productSrv.StoreP(prod)
@@ -235,7 +291,11 @@ func (pserv *AdminProductHandler) DeleteSellerProducts(w http.ResponseWriter, r 
 	}
 	http.Redirect(w, r, "#", http.StatusSeeOther)
 }
+/*func (pserv *AdminProductHandler) BrowseHouse(w http.ResponseWriter, r *http.Request) {
+	pserv.productSrv.Bytype("")
+	pserv.tmpl.ExecuteTemplate(w, "houses.html", data)
 
+}*/
 func (pserv *AdminProductHandler) SearchProducts(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		ids := r.URL.Query().Get("search")

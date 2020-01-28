@@ -24,7 +24,7 @@ func (p *PostProductRepo) Products() ([]entity.Product, error) {
 
 	for rows.Next() {
 		product := entity.Product{}
-		err = rows.Scan(&product.ID, &product.Name, &product.Ptype, &product.Price, &product.Description, &product.CreatedAt, &product.Image)
+		err = rows.Scan(&product.ID, &product.Name, &product.Ptype, &product.Price, &product.Description, &product.CreatedAt, &product.Image, &product.UserID)
 		if err != nil {
 			return nil, err
 		}
@@ -39,7 +39,8 @@ func (p *PostProductRepo) Product(id int) (entity.Product, error) {
 
 	prod := entity.Product{}
 
-	err := rows.Scan(&prod.ID, &prod.Name, &prod.Ptype, &prod.Price, &prod.Description, &prod.CreatedAt, &prod.Image)
+	err := rows.Scan(&prod.ID, &prod.Name, &prod.Ptype, &prod.Price, &prod.Description, &prod.CreatedAt, &prod.Image, &prod.UserID)
+
 
 	if err != nil {
 		return prod, err
@@ -48,8 +49,20 @@ func (p *PostProductRepo) Product(id int) (entity.Product, error) {
 
 }
 
+func (p *PostProductRepo) Bytype(typ string) (entity.Product, error){
+	rows := p.conn.QueryRow("Select * from product Where ptype = $1", typ)
+
+	prod := entity.Product{}
+	err := rows.Scan(&prod.ID, &prod.Name, &prod.Ptype, &prod.Price, &prod.Description, &prod.CreatedAt, &prod.Image, &prod.UserID)
+
+
+	if err != nil {
+		return prod, err
+	}
+	return prod, nil
+}
 func (p *PostProductRepo) UpdateP(pro entity.Product) error {
-	_, err := p.conn.Exec("UPDATE product SET name = $1, ptype=$2, price=$3, description=$4,Image=$5 WHERE id = $6", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image, pro.ID)
+	_, err := p.conn.Exec("UPDATE product SET name = $1, ptype=$2, price=$3, description=$4,Image=$5,userid=$6 WHERE id = $6", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image, pro.ID, pro.UserID)
 	if err != nil {
 		return errors.New("update failed")
 	}
@@ -57,7 +70,7 @@ func (p *PostProductRepo) UpdateP(pro entity.Product) error {
 }
 
 func (p *PostProductRepo) StoreP(pro entity.Product) error {
-	_, err := p.conn.Exec("INSERT INTO product (name,ptype,price,description,Image,createdat)"+"values($1,$2,$3,$4,$5,current_timestamp)", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image)
+	_, err := p.conn.Exec("INSERT INTO product (name,ptype,price,description,Image,userid,createdat)"+"values($1,$2,$3,$4,$5,$6,current_timestamp)", pro.Name, pro.Ptype, pro.Price, pro.Description, pro.Image, pro.UserID)
 	if err != nil {
 		panic(err)
 		return errors.New("failed to store")
@@ -84,7 +97,7 @@ func (p *PostProductRepo) SearchProduct(prod string) ([]entity.Product, error) {
 	pr := []entity.Product{}
 	for rows.Next() {
 		product := entity.Product{}
-		err := rows.Scan(&product.ID, &product.Name, &product.Ptype, &product.Price, &product.Description, &product.CreatedAt, &product.Image)
+		err := rows.Scan(&product.ID, &product.Name, &product.Ptype, &product.Price, &product.Description, &product.CreatedAt, &product.Image, &product.UserID)
 		if err != nil {
 			return nil, err
 

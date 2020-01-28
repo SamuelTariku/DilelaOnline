@@ -10,3 +10,9 @@ type UserService interface {
 	DeleteUser(id int) error
 	StoreUser(user entity.User) error
 }
+
+type SessionService interface {
+	Session(id string) (entity.Session, error)
+	StoreSession(sess entity.Session) error
+	DeleteSession(id string) error
+}

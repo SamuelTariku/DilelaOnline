@@ -132,16 +132,16 @@ h2{
 }
 
 .main-product{
-	height: 83vw;
+	height: 133vw;
 	padding: 2vw;
 }
 
 .main-product-top{
 	display: flex;
-	margin-bottom: 10vw;
 }
 
 .product-basic {
+	
 }
 .product-basic img{
 	width: 43vw;
@@ -171,11 +171,18 @@ h2{
 	margin-right: 1vw;
 }
 
-.product-comments{
-	padding: 20px 50px;
-	margin: 10px;
-	width: 30vw;
+.product-addComment input{
 }
+.product-addComment textarea{
+	margin-bottom: 1vw;
+}
+.product-comments{
+	width: 70vw;
+	padding: 2vw;
+	margin: 1vw;
+	display: block;
+}
+
 .cartButton {
 	height: 7vw;
 	width: 20vw;

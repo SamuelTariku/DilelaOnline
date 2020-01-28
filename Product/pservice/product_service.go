@@ -18,7 +18,7 @@ func (p *ProductService) Products() ([]entity.Product, error) {
 	if err != nil {
 		return nil, err
 	}
-	return prod, nil
+	return prod, err
 }
 
 func (p *ProductService) Product(id int) (entity.Product, error) {
@@ -26,7 +26,14 @@ func (p *ProductService) Product(id int) (entity.Product, error) {
 	if err != nil {
 		return prod, err
 	}
-	return prod, nil
+	return prod, err
+}
+func (p *ProductService) Bytype(id string) (entity.Product, error) {
+	prod, err := p.productRepo.Bytype(id)
+	if err != nil {
+		return prod, err
+	}
+	return prod, err
 }
 
 func (p *ProductService) UpdateP(prod entity.Product) error {
@@ -35,7 +42,7 @@ func (p *ProductService) UpdateP(prod entity.Product) error {
 		return err
 
 	}
-	return nil
+	return err
 }
 
 func (p *ProductService) StoreP(prod entity.Product) error {
@@ -52,7 +59,7 @@ func (p *ProductService) DeleteP(id int) error {
 		return err
 
 	}
-	return nil
+	return err
 }
 
 func (p *ProductService) SearchProduct(prod string) ([]entity.Product, error) {
@@ -60,5 +67,5 @@ func (p *ProductService) SearchProduct(prod string) ([]entity.Product, error) {
 	if err != nil {
 		return nil, err
 	}
-	return products, nil
+	return products, err
 }

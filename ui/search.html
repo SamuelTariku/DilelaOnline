@@ -12,53 +12,10 @@
 
 
 <body>
-<header>
-
-<nav class="navbar navbar-dark bg-primary">
-	<div class="navbar-header">
-		<a href="index.html">
-			<img class="img-fluid navbar-brand" src="assets/images/logo.png" alt="logo" height="70px">
-		</a>
-	</div>
-	<!--
-	<div>
-	</div>
-	!-->
-	<form class="navbar-form navbar-left" method="get" action="/" role="search">
-			<input type="text" class="form-control" placeholder="search">
-			<button type="submit" class="btn btn-light">search</button>
-	</form>
-
-	<div class="shoppingCard">cart</div>
-	<a href="signIn.html"><button class="btn btn-light navbar-btn" type="button">Sign in</button></a>
-
-	<button class="btn btn-light navbar-btn float-right" type="button" style="display:none">Sign out</button>
-	<!-- Side Panel control javascript !-->
-	</div>
-</nav>
-
-<nav class="navbar bg-secondary" role="navigation">
-	<ul class="nav">
-		<li class="nav-item active">
-			<a class="nav-link text-light" href="houses.html">Houses</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-light" href="cars.html">Cars</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-light" href="electronics.html">Electronics</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-light" href="goods.html">Goods</a>
-		</li>
-	</ul>
-</nav>
-
-</header>
-
+{{template "navbar.html"}}
 <div class="search-content">
 
-	<div class="search-filters">
+	<div class="search-filters" style="display: none">
 		<div class="filter">
 			Category filter
 			<form class="category-filter" action="index.html" method="post">
@@ -156,15 +113,7 @@
 
 </div>
 
-<footer class="bg-dark">
-<ul class="list-inline text-light">
-	<li class="list-inline-item">Terms and services</li>
-	<li class="list-inline-item">Copyright information</li>
-	<li class="list-inline-item">Sign in, if not signed in</li>
-</ul>
-
-</footer>
-
+{{template "footer.html"}}
 </body>
 
 

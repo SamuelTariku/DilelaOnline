@@ -61,65 +61,73 @@
 
 	<div class="product-basic">
 		<div class="product-rating">
-			5 stars
+			{{.AverageStars}} stars
 		</div>
+		{{with .Product}}
 		<img src="assets\images\{{.Image}}" alt="product-image">
 		<div class="product-info">
-
+			
 			<div>
-				<h2>{{.ProductName}}</h2>
-				<p>{{.ProductDesc}}</p>
+				<h2>{{.Name}}</h2>
+				<p>{{.Description}}</p>
 			</div>
 			<div class="product-price">
-				<p>${{.ProductPrice}}</p>
+				<p>${{.Price}}</p>
 			</div>
+			
 		</div>
+		{{end}}
 	</div>
 
 	<div class="product-side">
 		<div class="product-cart">
+			{{with .Product}}
+			<a href="/addCart?proid={{.ID}}&productname={{.Name}}">
 			<button class="cartButton btn btn-primary"type="button" name="button">
 				ADD TO CART
 			</button>
+				{{end}}
+			</a>
 		</div>
-		<!-- STARS !-->
+		<hr>
 		<div class="product-feedback">
 			<!-- number of comments !-->
-			<h3>Feedback(300)</h3>
-			<div class="product-comments">
-				<h3>Username</h3>
-				<p>Something good about the product</p>
-				5 stars
-			</div>
-			<div class="product-comments">
-				<h3>Username</h3>
-				<p>Something good about the product</p>
-				5 stars
-			</div>
-			<div class="product-comments">
-				<h3>Username</h3>
-				<p>Something good about the product</p>
-				5 stars
-			</div>
+			{{with .Product}}
+			<form method="POST" action="/addComment?product={{.ID}}" class="product-addComment">
+			{{end}}
+				<textarea name="cmessage" id="commentAdd" cols="50" rows="5" placeholder="What do you think of the product"></textarea>
+				<br>
+				<label for="commentRating">Stars:</label>
+				<select name="crating" id="commentRating">
+					<option value="5">5 stars</option>
+					<option value="4">4 stars</option>
+					<option value="3">3 stars</option>
+					<option value="2">2 stars</option>
+					<option value="1">1 stars</option>
+				</select>
+				<br>
+				<input class="btn btn-secondary" type="submit"></input>
+			</form>
 		</div>
+		
 	</div>
 	</div>
+	<hr>
+	{{with .Comments}}
+	{{range .}}
 	<div class="main-product-bottom">
-
+			<div class="product-comments">
+					
+					<p class="comment-time">{{.PlacedAt}}</p>
+					<p class="comment-username">{{.Name}}</p>
+					<p class="comment-message">{{.Message}}</p>
+					<p class="comment-stars">{{.Rating}} stars</p>
+				</div>
 	</div>
+	{{end}}
+	{{end}}
 </div>
-
-
-
-<footer class="bg-dark">
-<ul class="list-inline text-light">
-	<li class="list-inline-item">Terms and services</li>
-	<li class="list-inline-item">Copyright information</li>
-	<li class="list-inline-item">Sign in, if not signed in</li>
-</ul>
-
-</footer>
-
+{{template "footer.html"}}
 </body>
 
 

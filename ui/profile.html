@@ -75,7 +75,7 @@
 				<h2>Account Info</h2>
 				<p>Change password</p>
 				<p>Change username</p>
-				<p>Some more shit...</p>
+				<p>Other features...</p>
 			</div>
 
 		</div>
@@ -83,10 +83,18 @@
 			<div class="shoppingCart card">
 				<h2>Shopping Cart</h2>
 				<hr>
+				
 				{{range .ShoppingCart}}
-					<li class="cart-item"><p>{{.ItemName}}</p><hr><p>{{.ItemPrice}}</p></li>
+				
+					<div class="cart-product">
+					<input type="checkbox" name="checkProduct">
+					<li class="cart-item"><p class="item-right">{{.ProductName}}</p><hr><p class="item-left">${{.Price}}</p></li>
+					<a href="/order/add?id={{.ID}}"><button class="shopping-cart-bbutton btn btn-secondary" type="button" name="button" style="">Buy</button></a>	
+				</div>
+				
 				{{end}}
 				<button class="btn btn-primary" type="button" name="button">Check out</button>
+				
 			</div>
 		</div>
 		<div class="profile-lside">
@@ -94,7 +102,7 @@
 				<h2>Shopping History</h2>
 				<hr>
 				{{range .ShoppingHistory}}
-					<li class="cart-item"><p>{{.ItemName}}</p><hr><p>{{.ItemPrice}}</p></li>
+					<li class="cart-item"><p>{{.Name}}</p><hr><p>{{.Price}}</p></li>
 				{{end}}
 			</div>
 		</div>
@@ -108,15 +116,16 @@
 
 
 
-<footer class="bg-dark">
-	<ul class="list-inline text-light">
-		<li class="list-inline-item">Terms and services</li>
-		<li class="list-inline-item">Copyright information</li>
-		<li class="list-inline-item">Sign in, if not signed in</li>
-	</ul>
+{{template "footer.html"}}
 
-</footer>
-
+<div style="display: none;">
+{{.Token}}
+</div>
+<script>
+$(document).ready(function(){
+	localStorage.setItem("userid", {{.}})       
+})
+</script>
 </body>
 
 

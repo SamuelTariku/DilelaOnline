@@ -12,48 +12,9 @@
 
 
 <body>
-<header>
-<nav class="navbar navbar-dark bg-primary">
-	<div class="navbar-header">
-		<a href="index.html">
-			<img class="img-fluid navbar-brand" src="assets/images/logo.png" alt="logo" height="70px">
-		</a>
-	</div>
-	<!--
-	<div>
-	</div>
-	!-->
-	<form class="navbar-form navbar-left" method="get" action="/search" role="search">
-			<input type="text" class="form-control" placeholder="search" name="search">
-			<button type="submit" class="btn btn-light">search</button>
-	</form>
 
-	<div class="shoppingCard">cart</div>
-	<a href="/signin"><button class="btn btn-light navbar-btn" type="button">Sign in</button></a>
+{{template "navbar.html"}}
 
-	<button class="btn btn-light navbar-btn float-right" type="button" style="display:none">Burger</button>
-
-	</div>
-</nav>
-
-<nav class="secondNav navbar" role="navigation">
-	<ul class="nav">
-		<li class="nav-item active">
-			<a class="nav-link text-light" href="houses.html">Houses</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-light" href="cars.html">Cars</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-light" href="electronics.html">Electronics</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-light" href="goods.html">Goods</a>
-		</li>
-	</ul>
-</nav>
-
-</header>
 <div class="main">
 	<!-- Image Slider javascript !-->
 	<div id="myCarousel" class="carousel slide">
@@ -62,17 +23,30 @@
 			<li data-target="#myCarousel" data-slide-to="1"></li>
 			<li data-target="#myCarousel" data-slide-to="2"></li>
 		</ul>
+		
 		<div class="carousel-inner text-center" id="carouselDiv">
+			
+			
+			{{with .SliderAdvert}}
+			{{with .FirstProduct}}
 			<div class="carousel-item active">
-				<img src="assets/images/test1.jpg" alt="FirstSlide" height="500vw">
+				<img src="assets/images/{{.Image}}" alt="FirstSlide" height="600vw" width="100%">
 			</div>
+			{{end}}
+			{{with .SecondProduct}}
 			<div class="carousel-item">
-				<img src="assets/images/test2.jpg" alt="SecondSlide" height="500vw">
+					<img src="assets/images/{{.Image}}" alt="SecondSlide" height="600vw" width="100%">
 			</div>
+			{{end}}
+			{{with .ThirdProduct}}
 			<div class="carousel-item">
-				<img src="assets/images/test3.jpg" alt="ThirdSlide" height="500vw">
+					<img src="assets/images/{{.Image}}" alt="ThirdSlide" height="600vw" width="100%">
 			</div>
-
+			{{end}}
+			{{end}}
+			
+			
+		
 		</div>
 		<a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
 		<span class="carousel-control-prev-icon"></span>
@@ -170,22 +144,14 @@
 	</div>
 
 	</section>
-	<aside>
+	<aside style="display: none;">
 		Advertizing
 	</aside>
 	</div>
 </div>
 
 
-<footer class="bg-dark">
-<ul class="list-inline text-light">
-	<li class="list-inline-item">Terms and services</li>
-	<li class="list-inline-item">Copyright information</li>
-	<li class="list-inline-item">Sign in, if not signed in</li>
-</ul>
-
-</footer>
-
+<{{template "footer.html"}}
 </body>
 
 

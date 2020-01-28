@@ -14,17 +14,25 @@
 </head>
 
 <body>
+        {{with .VErrors}}
+        <h1 style="color:red">
+            {{.}}
+        </h1>
+        {{end}}
+
     <div class="bg" style="background-image: url('assets/images/backiee-10377.jpg');height: 100%;background-position: center;
     background-repeat: no-repeat;
     background-size: cover;opacity: 0.6;
   ">
         <div class="container" style="padding-top:230px;width:380px">
+            
             <div class="">
                 <div class="col s12 l12">
                     <div class="card vertical ">
                         <div height="150">
 
                         </div>
+
                         <div class="card-stacked" style="height:360px">
                             <div class=" card-content">
                                 <h4 class=" purple-text text-darken-1 center" style="font-weight:bold;">

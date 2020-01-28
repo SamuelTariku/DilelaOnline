@@ -2,10 +2,18 @@ package main
 
 import (
 	//"../../entity"
+	"../../cartserv/crtrepository"
+	"../../cartserv/crtservice"
+	"../../advertisement/arepository"
+	"../../advertisement/aservice"
 	"../../balance/brepository"
 	"../../balance/bservice"
+	"../../comment/crepository"
+	"../../comment/cservice"
 	"../../product/prepository"
 	"../../product/pservice"
+	"../../SoldProduct/sprepository"
+	"../../SoldProduct/spservice"
 	"../../users/repository"
 	"../../users/service"
 	"../http/handler"
@@ -31,6 +39,11 @@ const (
 var userService *service.UserService
 var balanceService *bservice.BalanceService
 var productService *pservice.ProductService
+var sproductService *spservice.ProductService
+var commentService *cservice.CommentService
+var advertService *aservice.AdvertService
+var cartSerivice *crtservice.CartService
+var sessionService *service.SessionService
 
 func main() {
 	/* Database connection */
@@ -58,13 +71,32 @@ func main() {
 	br := brepository.NewBalanceRepo(db)
 	balanceService = bservice.NewBalanceService(br)
 
+	commentRepo := crepository.NewCommPostRepo(db)
+	commentServ := cservice.NewCommentService(commentRepo)
+
+	advertRepo := arepository.NewPostAdvertRepo(db)
+	advertServ := aservice.NewAdvertService(advertRepo)
+
 	productRep := prepository.NewPostProductRepo(db)
 	productService = pservice.NewProductService(productRep)
 
-	adminUserHandler := handler.NewAdminUserHandler(tmpl, userService, balanceService)
-	adminProductHandler := handler.NewAdminSellerHandler(tmpl, productService)
+	sproductRep := sprepository.NewPostProductRepo(db)
+	sproductService = spservice.NewProductService(sproductRep)
+
+	cartRepo := crtrepository.NewPostCartRepo(db)
+	cartServ := crtservice.NewCartService(cartRepo)
+
+/*	sessionRepo := repository.NewSessionRepo(db)
+	sessionServ := service.NewSessionService(sessionRepo)*/
+
+	adminUserHandler := handler.NewAdminUserHandler(tmpl, userService, balanceService, cartServ, sproductService)
+	adminProductHandler := handler.NewAdminSellerHandler(tmpl, productService, commentServ, advertServ)
+	adminCommentHandler := handler.NewCommentHandler(tmpl, productService, commentServ, userService)
+	adminCartHandler := handler.NewCartHandler(tmpl, cartServ, productService)
+	adminOrderHandler := handler.NewAdminOrderHandler(tmpl, productService, cartServ, sproductService, balanceService)
 
 	fs := http.FileServer(http.Dir("../../ui/assets"))
+
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/signuppage", adminUserHandler.Signuppage)
@@ -78,6 +110,14 @@ func main() {
 	http.HandleFunc("/newProduct", adminProductHandler.NewSellerProducts)
 	http.HandleFunc("/product", adminProductHandler.ProductPage)
 	http.HandleFunc("/search", adminProductHandler.SearchProducts)
+	http.HandleFunc("/house", adminProductHandler.SearchProducts)
+	http.HandleFunc("/electronics", adminProductHandler.SearchProducts)
+	http.HandleFunc("/cars", adminProductHandler.SearchProducts)
+	http.HandleFunc("/goods", adminProductHandler.SearchProducts)
+	http.HandleFunc("/addComment", adminCommentHandler.AddComment)
+	http.HandleFunc("/addCart", adminCartHandler.AddCart)
+	http.HandleFunc("/order/add", adminOrderHandler.AddOrder)
+	http.HandleFunc("/signout", adminUserHandler.Logout)
 	http.ListenAndServe(":8080", nil)
 
 }

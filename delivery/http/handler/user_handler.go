@@ -1,10 +1,12 @@
 package handler
 
 import (
+	"../../../form"
+	"../../../SoldProduct"
 	"../../../balance"
+	"../../../cartserv"
 	"../../../entity"
 	"../../../users"
-
 	//"../../../users/brepository"
 	//"../../../users/bservice"
 	//"database/sql"
@@ -20,17 +22,14 @@ type AdminUserHandler struct {
 	tmpl    *template.Template
 	userSrv users.UserService
 	balsrv  balance.BalanceService
+	cartSrv cartserv.CartService
+	sproductSrv SoldProduct.ProductService
 }
 
-type SessionHandler struct {
-	active bool
-	user   entity.User
-}
 
-var session SessionHandler
 
-func NewAdminUserHandler(t *template.Template, ur users.UserService, b balance.BalanceService) *AdminUserHandler {
-	return &AdminUserHandler{tmpl: t, userSrv: ur, balsrv: b}
+func NewAdminUserHandler(t *template.Template, ur users.UserService, b balance.BalanceService, crt cartserv.CartService, sp SoldProduct.ProductService) *AdminUserHandler {
+	return &AdminUserHandler{tmpl: t, userSrv: ur, balsrv: b, cartSrv:crt, sproductSrv:sp}
 }
 
 func (userService *AdminUserHandler) MySalesHandler(w http.ResponseWriter, req *http.Request) {
@@ -46,6 +45,7 @@ func (userService *AdminUserHandler) MySalesHandler(w http.ResponseWriter, req *
 }
 
 func (userService *AdminUserHandler) ProfileHandler(w http.ResponseWriter, req *http.Request) {
+
 	type displayItem struct {
 		ItemName  string
 		ItemPrice float64
@@ -53,30 +53,45 @@ func (userService *AdminUserHandler) ProfileHandler(w http.ResponseWriter, req *
 	type profileData struct {
 		Username        string
 		AccountNo       float64
-		ShoppingCart    []displayItem
-		ShoppingHistory []displayItem
+		ShoppingCart    []entity.Cart
+		ShoppingHistory []entity.Product
+		Token			string
 	}
-	if session.active {
 
-		balanceAmmount, err := userService.balsrv.Balance(int(session.user.ID))
+	var token string
+
+	if req.Method == http.MethodGet{
+		token = req.URL.Query().Get("token")
+	} else {
+		token = " "
+	}
+
+
+
+
+	if OldSession.active {
+
+		balanceAmmount, err := userService.balsrv.Balance(int(OldSession.user.ID))
 		if err != nil {
 			panic(err)
 		}
-		//Add shopping cart table
 
-		shoppingCartData := []displayItem{
-			displayItem{"Item 1", 200.5},
-			displayItem{"Item 2", 1450.6},
+		shoppingCartData, err := userService.cartSrv.UserCart(int(OldSession.user.ID))
+		if err != nil {
+			panic(err)
 		}
 
-		shoppingHistoryData := []displayItem{
-			displayItem{"Item 1", 200.5},
-			displayItem{"Item 2", 1450.6},
+		shoppingHistoryData,err := userService.sproductSrv.SoldP(int(OldSession.user.ID))
+		if err != nil {
+			panic(err)
 		}
 
-		data := profileData{session.user.FirstName,
+
+
+		data := profileData{OldSession.user.FirstName,
 			balanceAmmount.YourBalance, shoppingCartData,
-			shoppingHistoryData}
+			shoppingHistoryData, token}
+
 		err = userService.tmpl.ExecuteTemplate(w, "profile.html", data)
 		if err != nil {
 			panic(err)
@@ -88,7 +103,14 @@ func (userService *AdminUserHandler) ProfileHandler(w http.ResponseWriter, req *
 }
 
 func (userService *AdminUserHandler) Login(w http.ResponseWriter, req *http.Request) {
-	userService.tmpl.ExecuteTemplate(w, "signIn.html", nil)
+
+	validator := form.Input{Values:req.PostForm, VErrors: form.ValidationErrors{}}
+	userService.tmpl.ExecuteTemplate(w, "signIn.html", validator)
+}
+
+func (userService *AdminUserHandler) Logout(w http.ResponseWriter, req *http.Request) {
+	SessionStop()
+	http.Redirect(w, req, "/", 303)
 }
 func (userService *AdminUserHandler) ErrorPage(w http.ResponseWriter, req *http.Request) {
 	i := "<!DOCTYPE html><html><head></head><body>ERROR 404</body>"
@@ -97,11 +119,12 @@ func (userService *AdminUserHandler) ErrorPage(w http.ResponseWriter, req *http.
 	t.Execute(w, nil)
 }
 func (userService *AdminUserHandler) Signuppage(w http.ResponseWriter, req *http.Request) {
-	userService.tmpl.ExecuteTemplate(w, "signup.html", nil)
+	validator := form.Input{Values:req.PostForm, VErrors: form.ValidationErrors{}}
+	userService.tmpl.ExecuteTemplate(w, "signup.html", validator)
 }
 
 func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, req *http.Request) {
-	if session.active {
+	if OldSession.active {
 		http.Redirect(w, req, "/profile", http.StatusSeeOther)
 	}
 	if req.Method != "POST" {
@@ -116,8 +139,16 @@ func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, re
 
 	hashedpass, err := bcrypt.GenerateFromPassword([]byte(usr.Password), bcrypt.DefaultCost)
 
-	usr.Password = string(hashedpass)
+	validator_signin := form.Input{Values:req.PostForm, VErrors:form.ValidationErrors{}}
+	validator_signin.Required("first", "last", "email", "password", "secondpassword")
+	validator_signin.MatchesPattern("email", form.EmailRX)
+	validator_signin.MinLength("password", 8)
+	validator_signin.PasswordMatches("password", "secondpassword")
 
+	if !validator_signin.Valid() {
+		userService.tmpl.ExecuteTemplate(w, "signup.html", validator_signin)
+	}
+	usr.Password = string(hashedpass)
 	err = userService.userSrv.StoreUser(usr)
 	use, err := userService.userSrv.User(usr.Email)
 	err = userService.balsrv.StoreId(use.ID)
@@ -135,13 +166,15 @@ func (userService *AdminUserHandler) AdminRegistration(w http.ResponseWriter, re
 }
 
 func (userService *AdminUserHandler) AdminLogin(w http.ResponseWriter, req *http.Request) {
-	if session.active {
+	if OldSession.active {
 		http.Redirect(w, req, "/profile", http.StatusSeeOther)
 	}
 	if req.Method != "POST" {
 		http.Redirect(w, req, "/signinpage", http.StatusSeeOther)
 		return
 	}
+
+	validator := form.Input{Values:req.PostForm, VErrors: form.ValidationErrors{}}
 	email := req.FormValue("email")
 	password := req.FormValue("password")
 
@@ -149,16 +182,24 @@ func (userService *AdminUserHandler) AdminLogin(w http.ResponseWriter, req *http
 	usr, err := userService.userSrv.User(email)
 
 	if err != nil {
-		log.Println("Username or Password is incorrect")
-		http.Redirect(w, req, "/signinpage", 303)
+		validator.VErrors.Add("Login fail", "Username or password incorrect")
+		userService.tmpl.ExecuteTemplate(w, "signIn.html", validator)
 		return
 	}
+
 
 	if email == usr.Email {
 		err = bcrypt.CompareHashAndPassword([]byte(usr.Password), []byte(password))
 		log.Println("Reached here")
 		if err != nil {
-			panic(err.Error())
+			if err != nil {
+				validator.VErrors.Add("Login fail", "Username or password incorrect")
+				err = userService.tmpl.ExecuteTemplate(w, "signIn.html", validator)
+				if err != nil{
+					panic(nil)
+				}
+				return
+			}
 		}
 		user, err := userService.userSrv.UserwithID(int(usr.ID))
 		if err != nil {
@@ -166,8 +207,10 @@ func (userService *AdminUserHandler) AdminLogin(w http.ResponseWriter, req *http
 		}
 		//TEMPORARY
 		//WILL SET UP SESSIONS
-		session = SessionHandler{true, user}
-		http.Redirect(w, req, "/profile", http.StatusSeeOther)
+		//Profile generated a random token and stores it in database
+		SessionStart(user)
+		//Redirect to profile with encrypted token
+		http.Redirect(w, req, "profile.html", http.StatusSeeOther)
 	}
 	http.Redirect(w, req, "/signinpage", 303)
 	if err != nil {

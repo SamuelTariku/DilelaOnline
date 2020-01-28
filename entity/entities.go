@@ -1,8 +1,26 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
+
+
+type Session struct {
+	ID uint
+	UUID string
+	Expires	int64
+	Signingkey []byte
+}
 
 // Category represents ordermenu Category
+type Category struct {
+	ID          uint
+	Name        string
+	Description string
+	Image       string
+	//Items       []product
+}
+
 // Item represents type of products
 type Product struct {
 	ID          uint
@@ -12,15 +30,17 @@ type Product struct {
 	Description string
 	CreatedAt   time.Time
 	//Categories  Category
-	Image  string
-	UserID uint
+	Image string
+	UserID	uint
 }
 
-type Order struct {
-	ID       uint
-	PlacedAt time.Time
+type Cart struct {
+	ID uint
+	ProductID uint
 	UserID   uint
-	ItemID   uint
+	Price	float64
+	AddedTime time.Time
+	ProductName string
 }
 
 type Balance struct {
@@ -57,3 +77,25 @@ type Comment struct {
 	ProductID uint
 	Rating    uint
 }
+type Advertisement struct {
+	ID        uint
+	ProductID uint
+	Ptype     string
+}
+
+/*type Product struct {
+	ID          uint
+	Name        string
+	Ptype       string
+	Price       float64
+	Description string
+	CreatedAt   time.Time
+	//Categories  Category
+	Image string
+}
+
+type Balance struct {
+	ID          uint
+	YourBalance float64
+}
+*/

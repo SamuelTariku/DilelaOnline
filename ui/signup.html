@@ -12,6 +12,12 @@
 </head>
 
 <body>
+        {{with .VErrors}}
+        <h1 style="color:red">
+            {{.}}
+        </h1>
+        {{end}}
+
     <div class="uytr" style="background-image: url('assets/images/backiee-10377.jpg');height: 100%;background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -77,6 +83,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </div>
+
 </body>
 
 </html>
