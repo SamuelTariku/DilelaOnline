@@ -49,21 +49,21 @@ var CommentMock = Comment{
 	Rating:    4,
 }
 
-//var AdMock = Advertisement{
-//	ID:        1,
-//	ProductID: 23,
-//	Ptype:      "mock advert 01",
+var AdMock = Advertisement{
+	ID:        1,
+	ProductID: 23,
+	Ptype:      "mock advert 01",
+
+}
 //
-//}
-//
-//var CartMock = Cart{
-//	ID:       1,
-//	ProductID: 23,
-//	UserID:   21,
-//	AddedTime: time.Time{},
-//	Price:     323,
-//
-//}
+var CartMock = Cart{
+	ID:       1,
+	ProductID: 23,
+	UserID:   21,
+	AddedTime: time.Time{},
+	Price:     323,
+
+}
 
 //var SessionMock = Session {
 //	ID:         1,
